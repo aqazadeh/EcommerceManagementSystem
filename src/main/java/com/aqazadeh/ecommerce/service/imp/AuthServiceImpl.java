@@ -3,15 +3,14 @@ package com.aqazadeh.ecommerce.service.imp;
 import com.aqazadeh.ecommerce.dto.AuthDto;
 import com.aqazadeh.ecommerce.exception.ApplicationException;
 import com.aqazadeh.ecommerce.exception.ExceptionType;
+import com.aqazadeh.ecommerce.mapper.UserMapper;
 import com.aqazadeh.ecommerce.model.User;
 import com.aqazadeh.ecommerce.repository.UserRepository;
 import com.aqazadeh.ecommerce.request.LoginRequest;
 import com.aqazadeh.ecommerce.request.UserRegisterRequest;
 import com.aqazadeh.ecommerce.service.AuthService;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -27,12 +26,13 @@ import java.util.UUID;
 @Aspect
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
-//    private final UserService userService;
+    private final UserMapper userMapper;
+
     @Override
     public void register(UserRegisterRequest request) {
         if (userRepository.findByUsernameAndEmail(request.username(), request.email()).isPresent())
             throw new ApplicationException(ExceptionType.USERNAME_OR_EMAIL_EXISTS);
-        User convert = UserRegisterRequest.convert(request);
+        User convert = userMapper.toUser(request);
         userRepository.save(convert);
     }
 

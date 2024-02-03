@@ -18,14 +18,4 @@ public record UserRegisterRequest(
         @NotEmpty String firstName,
         @NotEmpty String lastName
 ) {
-
-    public static User convert(UserRegisterRequest request){
-        return User.builder()
-                .username(request.username())
-                .password(request.password())
-                .email(request.email())
-                .firstName(request.firstName())
-                .lastName(request.lastName())
-                .build();
-    }
 }

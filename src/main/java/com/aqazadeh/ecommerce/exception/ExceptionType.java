@@ -12,7 +12,8 @@ import lombok.Getter;
 public enum ExceptionType {
     USER_NOT_FOUND("user not found"),
     USER_INVALID_PASSWORD("invalid password"),
-    USERNAME_OR_EMAIL_EXISTS("username or email already exists");
+    USERNAME_OR_EMAIL_EXISTS("username or email already exists"),
+    PASSWORD_NOT_MATCH("PASSWORD NOT MATCH");
 
     private String message;
     ExceptionType(String message) {

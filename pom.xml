@@ -40,6 +40,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <scope>compile</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -51,6 +52,7 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
             <version>1.5.3.Final</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

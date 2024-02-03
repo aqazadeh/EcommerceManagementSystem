@@ -1,5 +1,7 @@
 package com.aqazadeh.ecommerce.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Author: Rovshan Aghayev
  * Version: v1.0
@@ -8,10 +10,10 @@ package com.aqazadeh.ecommerce.dto;
  */
 
 public record UserAddressDto(
-        Long id,
-        String addressLine,
+        @JsonProperty("address_id") Long id,
+        @JsonProperty("address_line") String addressLine,
         String city,
         String country,
-        String postalCode
+        @JsonProperty("postal_code") String postalCode
 ) {
 }

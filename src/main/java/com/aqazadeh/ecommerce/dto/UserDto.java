@@ -10,13 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 
 public record UserDto(
-        @JsonProperty("user_id")
-        Long id,
+        @JsonProperty("user_id") Long id,
         String username,
-        @JsonProperty("first_name")
-        String firstName,
-        @JsonProperty("last_name")
-        String lastName,
+        @JsonProperty("first_name") String firstName,
+        @JsonProperty("last_name") String lastName,
         String phone
 ) {
 }

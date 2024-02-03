@@ -10,7 +10,6 @@ import com.aqazadeh.ecommerce.request.LoginRequest;
 import com.aqazadeh.ecommerce.request.UserRegisterRequest;
 import com.aqazadeh.ecommerce.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -23,7 +22,6 @@ import java.util.UUID;
  */
 @Service
 @RequiredArgsConstructor
-@Aspect
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;

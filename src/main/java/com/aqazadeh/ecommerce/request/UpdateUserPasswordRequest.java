@@ -1,5 +1,7 @@
 package com.aqazadeh.ecommerce.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Author: Rovshan Aghayev
  * Version: v1.0
@@ -8,8 +10,11 @@ package com.aqazadeh.ecommerce.request;
  */
 
 public record UpdateUserPasswordRequest(
+        @JsonProperty("old_password")
         String oldPassword,
+        @JsonProperty("new_password")
         String newPassword,
+        @JsonProperty("new_repeated_password")
         String newRepeatedPassword
 ) {
 }

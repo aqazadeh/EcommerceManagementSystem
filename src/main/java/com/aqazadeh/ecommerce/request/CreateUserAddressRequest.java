@@ -1,5 +1,6 @@
 package com.aqazadeh.ecommerce.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 
 /**
@@ -11,12 +12,14 @@ import jakarta.validation.constraints.NotEmpty;
 
 public record CreateUserAddressRequest(
         @NotEmpty
+        @JsonProperty("address_line")
         String addressLine,
         @NotEmpty
         String city,
         @NotEmpty
         String country,
         @NotEmpty
+        @JsonProperty("postal_code")
         String postalCode
 ) {
 }

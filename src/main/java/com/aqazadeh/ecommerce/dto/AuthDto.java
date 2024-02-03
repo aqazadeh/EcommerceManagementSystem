@@ -1,6 +1,6 @@
 package com.aqazadeh.ecommerce.dto;
 
-import jakarta.validation.constraints.NotEmpty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Author: Rovshan Aghayev
@@ -10,8 +10,7 @@ import jakarta.validation.constraints.NotEmpty;
  */
 
 public record AuthDto(
-
-        String accessToken,
-        String refreshToken
+        @JsonProperty("access_token") String accessToken,
+        @JsonProperty("refresh_token") String refreshToken
 ) {
 }

@@ -1,5 +1,6 @@
 package com.aqazadeh.ecommerce.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -14,8 +15,8 @@ public record UserRegisterRequest(
         @NotEmpty String username,
         @NotEmpty @Email String email,
         @NotEmpty String password,
-        @NotEmpty String firstName,
-        @NotEmpty String lastName,
+        @NotEmpty @JsonProperty("first_name") String firstName,
+        @NotEmpty @JsonProperty("last_name")  String lastName,
         @NotEmpty String phone
 ) {
 }

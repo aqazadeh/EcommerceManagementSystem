@@ -1,5 +1,7 @@
 package com.aqazadeh.ecommerce.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Author: Rovshan Aghayev
  * Version: v1.0
@@ -8,7 +10,9 @@ package com.aqazadeh.ecommerce.request;
  */
 
 public record UpdateUserRequest(
+        @JsonProperty("first_name")
         String firstName,
+        @JsonProperty("last_name")
         String lastName,
         String phone
 ) {

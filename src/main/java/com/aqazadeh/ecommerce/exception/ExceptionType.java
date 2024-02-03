@@ -13,10 +13,12 @@ public enum ExceptionType {
     USER_NOT_FOUND("user not found"),
     USER_INVALID_PASSWORD("invalid password"),
     USERNAME_OR_EMAIL_EXISTS("username or email already exists"),
-    PASSWORD_NOT_MATCH("PASSWORD NOT MATCH");
+    PASSWORD_NOT_MATCH("PASSWORD NOT MATCH"),
 
-    private String message;
+    ADDRESS_NOT_FOUND("Address not found");
+
+    private final String info;
     ExceptionType(String message) {
-        this.message = message;
+        this.info = message;
     }
 }

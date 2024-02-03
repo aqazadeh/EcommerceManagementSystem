@@ -1,6 +1,5 @@
 package com.aqazadeh.ecommerce.request;
 
-import com.aqazadeh.ecommerce.model.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -16,6 +15,7 @@ public record UserRegisterRequest(
         @NotEmpty @Email String email,
         @NotEmpty String password,
         @NotEmpty String firstName,
-        @NotEmpty String lastName
+        @NotEmpty String lastName,
+        @NotEmpty String phone
 ) {
 }

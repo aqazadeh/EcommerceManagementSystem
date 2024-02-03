@@ -1,7 +1,11 @@
 package com.aqazadeh.ecommerce.mapper;
 
+import com.aqazadeh.ecommerce.dto.UserAddressDto;
 import com.aqazadeh.ecommerce.dto.UserDto;
 import com.aqazadeh.ecommerce.model.User;
+import com.aqazadeh.ecommerce.model.UserAddress;
+import com.aqazadeh.ecommerce.request.CreateUserAddressRequest;
+import com.aqazadeh.ecommerce.request.UpdateUserAddressRequest;
 import com.aqazadeh.ecommerce.request.UpdateUserRequest;
 import com.aqazadeh.ecommerce.request.UserRegisterRequest;
 import org.mapstruct.Mapper;
@@ -18,7 +22,10 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface UserMapper {
 
     UserDto toUserDto(User user);
-
     User toUser(UserRegisterRequest request);
     User toUser(@MappingTarget User user, UpdateUserRequest request);
+
+    UserAddress toAddress(CreateUserAddressRequest request);
+    UserAddress toAddress(@MappingTarget UserAddress address, UpdateUserAddressRequest request);
+    UserAddressDto toAddressDto(UserAddress address);
 }

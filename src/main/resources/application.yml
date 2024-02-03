@@ -10,9 +10,14 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
 
+springdoc:
+  api-docs:
+    path: "/api-docs"
+  swagger-ui:
+    operations-sorter: method
 
 pagination:
   limit: 10

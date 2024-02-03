@@ -1,17 +1,22 @@
 package com.aqazadeh.ecommerce.service.imp;
 
+import com.aqazadeh.ecommerce.dto.UserAddressDto;
 import com.aqazadeh.ecommerce.dto.UserDto;
 import com.aqazadeh.ecommerce.exception.ApplicationException;
 import com.aqazadeh.ecommerce.exception.ExceptionType;
 import com.aqazadeh.ecommerce.mapper.UserMapper;
 import com.aqazadeh.ecommerce.model.User;
+import com.aqazadeh.ecommerce.model.UserAddress;
+import com.aqazadeh.ecommerce.repository.UserAddressRepository;
 import com.aqazadeh.ecommerce.repository.UserRepository;
+import com.aqazadeh.ecommerce.request.CreateUserAddressRequest;
+import com.aqazadeh.ecommerce.request.UpdateUserAddressRequest;
 import com.aqazadeh.ecommerce.request.UpdateUserPasswordRequest;
 import com.aqazadeh.ecommerce.request.UpdateUserRequest;
 import com.aqazadeh.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,8 +31,10 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final UserAddressRepository userAddressRepository;
     private final UserMapper userMapper;
 
     @Value("${pagination.limit}")
@@ -70,8 +77,57 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
     }
 
+    @Override
+    public UserAddressDto getUserAddress(Long userId, Long addressId) {
+        UserAddress address = findAddressById(addressId);
+        if(!address.getUser().getId().equals(userId))
+            throw new ApplicationException(ExceptionType.ADDRESS_NOT_FOUND);
+
+        return userMapper.toAddressDto(address);
+    }
+
+    @Override
+    public List<UserAddressDto> getUserAllAddresses(Long userId) {
+        List<UserAddress> addresses = findUserById(userId).getAddresses();
+        return addresses.stream().map(userMapper::toAddressDto).toList();
+    }
+
+    @Override
+    public void createUserAddress(Long userId, CreateUserAddressRequest request) {
+        User user = findUserById(userId);
+        UserAddress address = userMapper.toAddress(request);
+        address.setUser(user);
+        userAddressRepository.save(address);
+    }
+
+    @Override
+    public void updateUserAddress(Long userId, Long addressId, UpdateUserAddressRequest request) {
+        UserAddress address = findAddressById(addressId);
+        if (!address.getUser().getId().equals(userId))
+            throw new ApplicationException(ExceptionType.ADDRESS_NOT_FOUND);
+
+        UserAddress userMapperAddress = userMapper.toAddress(address, request);
+        userAddressRepository.save(userMapperAddress);
+    }
+
+    @Override
+    public void deleteUserAddress(Long userId, Long addressId) {
+        UserAddress address = findAddressById(addressId);
+        if (!address.getUser().getId().equals(userId))
+            throw new ApplicationException(ExceptionType.ADDRESS_NOT_FOUND);
+        userAddressRepository.delete(address);
+    }
+
+
+
+
     private User findUserById(Long id){
         return userRepository.findById(id)
                 .orElseThrow(() -> new ApplicationException(ExceptionType.USER_NOT_FOUND));
+    }
+
+    private UserAddress findAddressById(Long addressId) {
+        return userAddressRepository.findById(addressId)
+                .orElseThrow(() -> new ApplicationException(ExceptionType.ADDRESS_NOT_FOUND));
     }
 }

@@ -1,6 +1,5 @@
 package com.aqazadeh.ecommerce.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -12,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record UserDto(
         @JsonProperty("user_id")
-        Long userId,
+        Long id,
         String username,
         @JsonProperty("first_name")
         String firstName,

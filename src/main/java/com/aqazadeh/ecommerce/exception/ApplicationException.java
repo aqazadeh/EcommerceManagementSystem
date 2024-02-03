@@ -10,6 +10,6 @@ package com.aqazadeh.ecommerce.exception;
 public class ApplicationException extends RuntimeException{
 
     public ApplicationException(ExceptionType exceptionType) {
-        super(exceptionType.getMessage());
+        super(exceptionType.getInfo());
     }
 }

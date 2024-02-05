@@ -20,7 +20,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"products", "category"})
+@ToString(exclude = {"products", "parent"})
 @EqualsAndHashCode(of = "id")
 public class Category {
     @Id
@@ -40,7 +40,7 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    private Category category;
+    private Category parent;
 
     @OneToMany(mappedBy = "category")
     private List<Product> products;

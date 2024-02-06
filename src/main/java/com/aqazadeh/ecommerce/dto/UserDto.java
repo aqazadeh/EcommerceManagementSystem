@@ -2,6 +2,8 @@ package com.aqazadeh.ecommerce.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 /**
  * Author: Rovshan Aghayev
  * Version: v1.0
@@ -14,6 +16,7 @@ public record UserDto(
         String username,
         @JsonProperty("first_name") String firstName,
         @JsonProperty("last_name") String lastName,
-        String phone
+        String phone,
+        List<UserAddressDto> addresses
 ) {
 }

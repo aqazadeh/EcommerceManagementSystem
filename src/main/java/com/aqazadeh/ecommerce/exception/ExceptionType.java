@@ -15,7 +15,7 @@ public enum ExceptionType {
     USERNAME_OR_EMAIL_EXISTS("username or email already exists"),
     PASSWORD_NOT_MATCH("PASSWORD NOT MATCH"),
 
-    ADDRESS_NOT_FOUND("Address not found");
+    ADDRESS_NOT_FOUND("Address not found"), CATEGORY_NOT_FOUND("category not found");
 
     private final String info;
     ExceptionType(String message) {

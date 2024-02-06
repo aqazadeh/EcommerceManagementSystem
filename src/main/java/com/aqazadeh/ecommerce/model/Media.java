@@ -1,39 +1,34 @@
 package com.aqazadeh.ecommerce.model;
 
+import com.aqazadeh.ecommerce.model.enums.MediaType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Author: Rovshan Aghayev
  * Version: v1.0
- * Date: 31.01.2024
- * Time: 16:14
+ * Date: 6.02.2024
+ * Time: 14:59
  */
 @Entity
-@Getter
-@Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"products", "parent"})
+@Builder
+@ToString(exclude = {"product"})
 @EqualsAndHashCode(of = "id")
-public class Category {
+public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String slug;
+    @Enumerated(EnumType.STRING)
+    private MediaType mediaType;
 
-    private String name;
-
-    @Lob
-    private String about;
+    private String url;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -41,14 +36,7 @@ public class Category {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category parent;
-
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    private List<Category> children;
-
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
-
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 }

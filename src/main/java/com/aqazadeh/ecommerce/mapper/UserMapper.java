@@ -8,9 +8,7 @@ import com.aqazadeh.ecommerce.request.CreateUserAddressRequest;
 import com.aqazadeh.ecommerce.request.UpdateUserAddressRequest;
 import com.aqazadeh.ecommerce.request.UpdateUserRequest;
 import com.aqazadeh.ecommerce.request.UserRegisterRequest;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 /**
  * Author: Rovshan Aghayev
@@ -21,11 +19,16 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UserMapper {
 
-    UserDto toUserDto(User user);
-    User toUser(UserRegisterRequest request);
-    User toUser(@MappingTarget User user, UpdateUserRequest request);
-
     UserAddress toAddress(CreateUserAddressRequest request);
+
     UserAddress toAddress(@MappingTarget UserAddress address, UpdateUserAddressRequest request);
+    @Named("toAddressDto")
     UserAddressDto toAddressDto(UserAddress address);
+
+    @Mapping(source = "addresses", target = "addresses", qualifiedByName = "toAddressDto")
+    UserDto toUserDto(User user);
+
+    User toUser(UserRegisterRequest request);
+
+    User toUser(@MappingTarget User user, UpdateUserRequest request);
 }

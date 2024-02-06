@@ -1,5 +1,6 @@
 package com.aqazadeh.ecommerce.model;
 
+import com.aqazadeh.ecommerce.model.enums.CouponType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,9 +23,13 @@ public class Coupon {
     @Id
     @GeneratedValue
     private Long id;
+    @Enumerated(EnumType.STRING)
+    private CouponType couponType;
 
-    private Double percentCount;
+    private Integer percentCount;
+    private Double cashCount;
 
+    @Column(unique = true)
     private String code;
 
     private String name;

@@ -1,6 +1,7 @@
 package com.aqazadeh.ecommerce.service;
 
 import com.aqazadeh.ecommerce.dto.CategoryDto;
+import com.aqazadeh.ecommerce.model.Category;
 import com.aqazadeh.ecommerce.request.CreateCategoryRequest;
 import com.aqazadeh.ecommerce.request.UpdateCategoryRequest;
 
@@ -26,4 +27,5 @@ public interface CategoryService {
 
     void delete(Long id);
 
+    Category findBySlug(String slug);
 }

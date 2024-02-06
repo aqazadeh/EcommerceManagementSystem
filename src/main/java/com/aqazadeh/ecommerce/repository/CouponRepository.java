@@ -3,6 +3,8 @@ package com.aqazadeh.ecommerce.repository;
 import com.aqazadeh.ecommerce.model.Coupon;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 /**
  * Author: Rovshan Aghayev
  * Version: v1.0
@@ -11,4 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface CouponRepository extends JpaRepository<Coupon, Long> {
+    Optional<Coupon> findByCode(String code);
 }

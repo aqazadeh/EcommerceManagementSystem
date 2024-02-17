@@ -5,6 +5,7 @@ import com.aqazadeh.ecommerce.model.Coupon;
 import com.aqazadeh.ecommerce.request.CreateCouponRequest;
 import com.aqazadeh.ecommerce.request.UpdateCouponRequest;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Component;
 
 public interface CouponMapper {
     CouponDto toCouponDto(Coupon coupon);
+
     Coupon toCoupon(CreateCouponRequest request);
-    Coupon toCoupon(UpdateCouponRequest request);
+
+    Coupon toCoupon(@MappingTarget Coupon coupon, UpdateCouponRequest request);
 }

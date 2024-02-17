@@ -32,6 +32,8 @@ public class Inventory {
 
     private Integer quantity;
 
+    private Double price;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

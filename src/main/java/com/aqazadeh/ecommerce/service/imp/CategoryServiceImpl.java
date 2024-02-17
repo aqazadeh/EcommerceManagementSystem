@@ -27,14 +27,15 @@ import java.util.Random;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+
     @Override
     public void create(CreateCategoryRequest request) {
         Category category = categoryMapper.toCategory(request);
-        if(category.getSlug() == null) {
+        if (category.getSlug() == null) {
             String slug = category.getName() + new Random().nextInt(10);
             category.setSlug(slug);
         }
-        if (request.parentId() != null){
+        if (request.parentId() != null) {
             Category parent = findById(request.parentId());
             category.setParent(parent);
         }
@@ -44,8 +45,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void update(Long id, UpdateCategoryRequest request) {
         Category category = findById(id);
-        Category newCategory = categoryMapper.toCategory(category ,request);
-        if (request.parentId() != null){
+        Category newCategory = categoryMapper.toCategory(category, request);
+        if (request.parentId() != null) {
             Category parent = findById(request.parentId());
             newCategory.setParent(parent);
         }
@@ -56,25 +57,23 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public CategoryDto getById(Long id) {
         Category category = findById(id);
-        CategoryDto categoryDto = categoryMapper.toCategoryDto(category);
 
-        return categoryDto;
+        return categoryMapper.toCategoryDto(category);
     }
 
     @Override
     @Transactional
     public CategoryDto getBySlug(String slug) {
         Category category = findBySlug(slug);
-        CategoryDto categoryDto = categoryMapper.toCategoryDto(category);
 
-        return categoryDto;    }
+        return categoryMapper.toCategoryDto(category);
+    }
 
     @Override
     @Transactional
     public List<CategoryDto> getAll() {
         List<Category> categories = categoryRepository.findByParentIsNull();
-        List<CategoryDto> categoryDtoList = categories.stream().map(categoryMapper::toCategoryDto).toList();
-        return categoryDtoList;
+        return categories.stream().map(categoryMapper::toCategoryDto).toList();
     }
 
     @Override
@@ -83,7 +82,8 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.delete(category);
     }
 
-    private Category findById(Long id) {
+    @Override
+    public Category findById(Long id) {
         return categoryRepository
                 .findById(id).
                 orElseThrow(() -> new ApplicationException(ExceptionType.CATEGORY_NOT_FOUND));

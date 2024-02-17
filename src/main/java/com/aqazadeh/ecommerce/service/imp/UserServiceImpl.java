@@ -19,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -118,16 +120,21 @@ public class UserServiceImpl implements UserService {
         userAddressRepository.delete(address);
     }
 
-
-
-
-    private User findUserById(Long id){
+    @Override
+    public User findUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ApplicationException(ExceptionType.USER_NOT_FOUND));
     }
 
-    private UserAddress findAddressById(Long addressId) {
+    @Override
+    public UserAddress findAddressById(Long addressId) {
         return userAddressRepository.findById(addressId)
                 .orElseThrow(() -> new ApplicationException(ExceptionType.ADDRESS_NOT_FOUND));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ApplicationException(ExceptionType.USER_NOT_FOUND));
     }
 }

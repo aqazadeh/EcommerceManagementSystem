@@ -1,13 +1,15 @@
 package com.aqazadeh.ecommerce.model;
 
+import com.aqazadeh.ecommerce.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Author: Rovshan Aghayev
@@ -24,7 +26,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @ToString(exclude = {"addresses"})
 @EqualsAndHashCode(of = "id")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,9 +51,23 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserAddress> addresses;
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
+
+
+    //Security
+    private boolean accountNonExpired;
+    private boolean isEnabled;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private Set<Role> authorities = new HashSet<>(Set.of(Role.ADMIN));
 }

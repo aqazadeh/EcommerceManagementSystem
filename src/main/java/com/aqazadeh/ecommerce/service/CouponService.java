@@ -25,5 +25,7 @@ public interface CouponService {
 
     void delete(Long id, UpdateCouponRequest request);
 
+    Coupon findById(Long id);
+
     Coupon getByCode(String code);
 }

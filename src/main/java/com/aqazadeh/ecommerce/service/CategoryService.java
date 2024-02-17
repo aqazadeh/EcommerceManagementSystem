@@ -28,4 +28,6 @@ public interface CategoryService {
     void delete(Long id);
 
     Category findBySlug(String slug);
+
+    Category findById(Long id);
 }

@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
  * Time: 14:59
  */
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

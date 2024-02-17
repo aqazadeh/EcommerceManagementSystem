@@ -20,7 +20,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"category", "inventory", "discount"})
+@ToString(exclude = {"category", "inventory", "discount", "user"})
 @EqualsAndHashCode(of = "id")
 public class Product {
     @Id
@@ -28,9 +28,7 @@ public class Product {
     private Long id;
 
     private String name;
-
-    private Double price;
-
+    private String slug;
     @Lob
     private String description;
 
@@ -44,13 +42,17 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Inventory> inventory;
 
     @ManyToOne
     @JoinColumn(name = "discount_id")
     private Discount discount;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Media> media;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

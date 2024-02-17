@@ -11,13 +11,12 @@ import com.aqazadeh.ecommerce.request.CreateCouponRequest;
 import com.aqazadeh.ecommerce.request.UpdateCouponRequest;
 import com.aqazadeh.ecommerce.service.CouponService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Author: Rovshan Aghayev
@@ -28,33 +27,47 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CouponServiceImpl implements CouponService {
+
     private final CouponRepository couponRepository;
     private final CouponMapper couponMapper;
     @Value("${pagination.limit}")
     private Integer limit;
+
     @Override
     public void create(CreateCouponRequest request) {
         if (couponRepository.findByCode(request.code()).isPresent()) {
             throw new ApplicationException(ExceptionType.COUPON_CODE_ALREADY_EXISTS);
         }
 
-        if(request.couponType()== CouponType.PERCENT) {
+        if (request.couponType() == CouponType.PERCENT) {
             if (request.percentCount() == null)
                 throw new ApplicationException(ExceptionType.COUPON_CREATE_ERROR);
         }
 
-        if(request.couponType()== CouponType.CASH) {
+        if (request.couponType() == CouponType.CASH) {
             if (request.cashCount() == null)
                 throw new ApplicationException(ExceptionType.COUPON_CREATE_ERROR);
         }
-        
+
         Coupon coupon = couponMapper.toCoupon(request);
         couponRepository.save(coupon);
     }
 
     @Override
     public void update(Long id, UpdateCouponRequest request) {
+        Coupon coupon = findById(id);
 
+        if (request.couponType() == CouponType.PERCENT) {
+            if (request.percentCount() == null)
+                throw new ApplicationException(ExceptionType.COUPON_CREATE_ERROR);
+        }
+
+        if (request.couponType() == CouponType.CASH) {
+            if (request.cashCount() == null)
+                throw new ApplicationException(ExceptionType.COUPON_CREATE_ERROR);
+        }
+        Coupon updatedCoupon = couponMapper.toCoupon(coupon, request);
+        couponRepository.save(updatedCoupon);
     }
 
     @Override
@@ -62,15 +75,13 @@ public class CouponServiceImpl implements CouponService {
 
         Pageable pageable = PageRequest.of(page, limit);
         List<Coupon> coupons = couponRepository.findAll(pageable).toList();
-        List<CouponDto> couponDtos = coupons.stream().map(couponMapper::toCouponDto).toList();
-        return couponDtos;
+        return coupons.stream().map(couponMapper::toCouponDto).toList();
     }
 
     @Override
     public CouponDto getById(Long id) {
         Coupon coupon = findById(id);
-        CouponDto couponDto = couponMapper.toCouponDto(coupon);
-        return couponDto;
+        return couponMapper.toCouponDto(coupon);
     }
 
     @Override
@@ -79,7 +90,8 @@ public class CouponServiceImpl implements CouponService {
         couponRepository.delete(coupon);
     }
 
-    private Coupon findById(Long id) {
+    @Override
+    public Coupon findById(Long id) {
         return couponRepository.findById(id).orElseThrow(() -> new ApplicationException(ExceptionType.COUPON_NOT_FOUND));
     }
 

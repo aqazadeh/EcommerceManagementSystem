@@ -17,4 +17,5 @@ public interface AuthService {
     void register(UserRegisterRequest request);
     AuthDto login(LoginRequest request);
     AuthDto refreshToken(String token);
+
 }

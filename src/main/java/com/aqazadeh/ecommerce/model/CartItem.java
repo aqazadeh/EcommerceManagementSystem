@@ -36,6 +36,10 @@ public class CartItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @ManyToOne
+    @JoinColumn(name = "inventory_id")
+    private Inventory inventory;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

@@ -1,11 +1,8 @@
 package com.aqazadeh.ecommerce.service;
 
-import com.aqazadeh.ecommerce.dto.DiscountDto;
 import com.aqazadeh.ecommerce.model.Discount;
-import com.aqazadeh.ecommerce.request.CreateDiscountRequest;
-import com.aqazadeh.ecommerce.request.UpdateDiscountRequest;
-
-import java.util.List;
+import com.aqazadeh.ecommerce.dto.request.CreateDiscountRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateDiscountRequest;
 
 /**
  * Author: Rovshan Aghayev

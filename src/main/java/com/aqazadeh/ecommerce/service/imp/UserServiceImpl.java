@@ -1,7 +1,7 @@
 package com.aqazadeh.ecommerce.service.imp;
 
-import com.aqazadeh.ecommerce.dto.UserAddressDto;
-import com.aqazadeh.ecommerce.dto.UserDto;
+import com.aqazadeh.ecommerce.dto.response.UserAddressDto;
+import com.aqazadeh.ecommerce.dto.response.UserDto;
 import com.aqazadeh.ecommerce.exception.ApplicationException;
 import com.aqazadeh.ecommerce.exception.ExceptionType;
 import com.aqazadeh.ecommerce.mapper.UserMapper;
@@ -9,10 +9,10 @@ import com.aqazadeh.ecommerce.model.User;
 import com.aqazadeh.ecommerce.model.UserAddress;
 import com.aqazadeh.ecommerce.repository.UserAddressRepository;
 import com.aqazadeh.ecommerce.repository.UserRepository;
-import com.aqazadeh.ecommerce.request.CreateUserAddressRequest;
-import com.aqazadeh.ecommerce.request.UpdateUserAddressRequest;
-import com.aqazadeh.ecommerce.request.UpdateUserPasswordRequest;
-import com.aqazadeh.ecommerce.request.UpdateUserRequest;
+import com.aqazadeh.ecommerce.dto.request.CreateUserAddressRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateUserAddressRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateUserPasswordRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateUserRequest;
 import com.aqazadeh.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -127,13 +127,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
     public UserAddress findAddressById(Long addressId) {
         return userAddressRepository.findById(addressId)
                 .orElseThrow(() -> new ApplicationException(ExceptionType.ADDRESS_NOT_FOUND));
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User findByConfirmationToken(String token) {
+        return userRepository.findByConfirmationToken(token).orElseThrow(() -> new ApplicationException(ExceptionType.INVALID_ACTIVATION_TOKEN));
+    }
+
+    @Override
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new ApplicationException(ExceptionType.USER_NOT_FOUND));
     }

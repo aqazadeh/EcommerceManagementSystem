@@ -1,9 +1,10 @@
 package com.aqazadeh.ecommerce.service;
 
-import com.aqazadeh.ecommerce.dto.CategoryDto;
+import com.aqazadeh.ecommerce.dto.response.CategoryDto;
 import com.aqazadeh.ecommerce.model.Category;
-import com.aqazadeh.ecommerce.request.CreateCategoryRequest;
-import com.aqazadeh.ecommerce.request.UpdateCategoryRequest;
+import com.aqazadeh.ecommerce.dto.request.CreateCategoryRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateCategoryRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 

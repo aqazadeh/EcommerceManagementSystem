@@ -1,13 +1,9 @@
 package com.aqazadeh.ecommerce.controller;
 
-import com.aqazadeh.ecommerce.dto.ProductDto;
+import com.aqazadeh.ecommerce.dto.response.ProductDto;
 import com.aqazadeh.ecommerce.model.User;
-import com.aqazadeh.ecommerce.request.CreateDiscountRequest;
-import com.aqazadeh.ecommerce.request.CreateProductRequest;
-import com.aqazadeh.ecommerce.request.SearchProductRequest;
-import com.aqazadeh.ecommerce.request.UpdateProductRequest;
+import com.aqazadeh.ecommerce.dto.request.*;
 import com.aqazadeh.ecommerce.service.ProductService;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +28,10 @@ public class ProductController {
 
     @PreAuthorize("hasRole('SELLER') or hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<Void> createProduct(@AuthenticationPrincipal User user,
-                                              @RequestPart("media") MultipartFile[] media,
-                                              @RequestPart("data") CreateProductRequest request
+    public ResponseEntity<Void> createProduct(
+            @AuthenticationPrincipal User user,
+            @RequestPart("media") MultipartFile[] media,
+            @RequestPart("data") CreateProductRequest request
     ) {
         //TODO allow only image and video media type
         productService.create(user, media, request);
@@ -42,48 +39,19 @@ public class ProductController {
     }
 
     @PreAuthorize("hasRole('SELLER') or hasRole('ADMIN')")
-    @PostMapping("/{id}/discount")
-    public ResponseEntity<Void> addDiscount(@AuthenticationPrincipal User user, @PathVariable Long id, CreateDiscountRequest request) {
-        productService.addDiscount(user, id, request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PreAuthorize("hasRole('SELLER') or hasRole('ADMIN')")
-    @DeleteMapping("/{productId}/discount/{discountId}")
-    public ResponseEntity<Void> removeDiscount(
+    @PatchMapping("/{productId}")
+    public ResponseEntity<Void> updateProduct(
             @AuthenticationPrincipal User user,
             @PathVariable Long productId,
-            @PathVariable Long discountId
+            @RequestBody UpdateProductRequest request
     ) {
-        productService.removeDiscount(user, productId, discountId);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PreAuthorize("hasRole('SELLER') or hasRole('ADMIN')")
-    @PostMapping("/{id}/media")
-    public ResponseEntity<Void> addMedia(@AuthenticationPrincipal User user, @PathVariable Long id, MultipartFile file) {
-        //TODO allow only image and video media type
-        productService.addMedia(user, id, file);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PreAuthorize("hasRole('SELLER') or hasRole('ADMIN')")
-    @DeleteMapping("/{productId}/media/{mediaId}")
-    public ResponseEntity<Void> deleteMedia(@AuthenticationPrincipal User user, @PathVariable Long productId, @PathVariable Long mediaId) {
-        productService.removeMedia(user, productId, mediaId);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PreAuthorize("hasRole('SELLER') or hasRole('ADMIN')")
-    @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateProduct(@AuthenticationPrincipal User user, @PathVariable Long id, @RequestBody UpdateProductRequest request) {
-        productService.update(user, id, request);
+        productService.update(user, productId, request);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> getById(@PathVariable String id) {
-        ProductDto productDto = productService.getById(id);
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductDto> getById(@PathVariable String productId) {
+        ProductDto productDto = productService.getById(productId);
         return ResponseEntity.ok(productDto);
     }
 
@@ -93,19 +61,78 @@ public class ProductController {
             @RequestParam(required = false) String categorySlug
     ) {
         List<ProductDto> productDtoList = productService.getAll(page, categorySlug);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.ok(productDtoList);
     }
 
     @PreAuthorize("hasRole('SELLER') or hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@AuthenticationPrincipal User user, @PathVariable Long id) {
-        productService.delete(user, id);
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Void> deleteProduct(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long productId
+    ) {
+        productService.deleteProduct(user, productId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ProductDto>> searchProduct(@RequestParam Integer page, @RequestBody SearchProductRequest request) {
+    public ResponseEntity<List<ProductDto>> searchProduct(
+            @RequestParam Integer page,
+            @RequestBody SearchProductRequest request
+    ) {
         List<ProductDto> productDtoList = productService.search(page, request);
         return ResponseEntity.ok(productDtoList);
+    }
+
+    @PreAuthorize("hasRole('SELLER') or hasRole('ADMIN')")
+    @PostMapping("/{productId}/discount")
+    public ResponseEntity<Void> addDiscount(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long productId,
+            CreateDiscountRequest request
+    ) {
+        productService.addDiscount(user, productId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/{productID}/discount/{discountId}")
+    public ResponseEntity<Void> updateDiscount(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long productID,
+            @RequestBody UpdateDiscountRequest request
+    ) {
+        productService.updateDiscount(user, productID, request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasRole('SELLER') or hasRole('ADMIN')")
+    @DeleteMapping("/{productId}/discount/")
+    public ResponseEntity<Void> removeDiscount(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long productId
+    ) {
+        productService.removeDiscount(user, productId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PreAuthorize("hasRole('SELLER') or hasRole('ADMIN')")
+    @PostMapping("/{productId}/media")
+    public ResponseEntity<Void> addMedia(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long productId,
+            @RequestPart MultipartFile file) {
+        //TODO allow only image and video media type
+        productService.addMedia(user, productId, file);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PreAuthorize("hasRole('SELLER') or hasRole('ADMIN')")
+    @DeleteMapping("/{productId}/media/{mediaId}")
+    public ResponseEntity<Void> deleteMedia(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long productId,
+            @PathVariable Long mediaId
+    ) {
+        productService.removeMedia(user, productId, mediaId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

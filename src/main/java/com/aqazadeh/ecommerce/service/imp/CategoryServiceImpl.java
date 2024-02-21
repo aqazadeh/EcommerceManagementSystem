@@ -1,15 +1,17 @@
 package com.aqazadeh.ecommerce.service.imp;
 
-import com.aqazadeh.ecommerce.dto.CategoryDto;
+import com.aqazadeh.ecommerce.dto.response.CategoryDto;
 import com.aqazadeh.ecommerce.exception.ApplicationException;
 import com.aqazadeh.ecommerce.exception.ExceptionType;
 import com.aqazadeh.ecommerce.mapper.CategoryMapper;
 import com.aqazadeh.ecommerce.model.Category;
 import com.aqazadeh.ecommerce.repository.CategoryRepository;
-import com.aqazadeh.ecommerce.request.CreateCategoryRequest;
-import com.aqazadeh.ecommerce.request.UpdateCategoryRequest;
+import com.aqazadeh.ecommerce.dto.request.CreateCategoryRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateCategoryRequest;
 import com.aqazadeh.ecommerce.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,7 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
                 orElseThrow(() -> new ApplicationException(ExceptionType.CATEGORY_NOT_FOUND));
     }
 
-
+    @Override
     public Category findBySlug(String slug) {
         return categoryRepository
                 .findBySlug(slug).

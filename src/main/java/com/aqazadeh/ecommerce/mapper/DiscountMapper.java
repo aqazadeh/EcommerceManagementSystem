@@ -1,9 +1,9 @@
 package com.aqazadeh.ecommerce.mapper;
 
-import com.aqazadeh.ecommerce.dto.DiscountDto;
+import com.aqazadeh.ecommerce.dto.response.DiscountDto;
 import com.aqazadeh.ecommerce.model.Discount;
-import com.aqazadeh.ecommerce.request.CreateDiscountRequest;
-import com.aqazadeh.ecommerce.request.UpdateDiscountRequest;
+import com.aqazadeh.ecommerce.dto.request.CreateDiscountRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateDiscountRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;

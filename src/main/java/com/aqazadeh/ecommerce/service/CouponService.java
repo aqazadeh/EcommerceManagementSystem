@@ -1,9 +1,9 @@
 package com.aqazadeh.ecommerce.service;
 
-import com.aqazadeh.ecommerce.dto.CouponDto;
+import com.aqazadeh.ecommerce.dto.response.CouponDto;
 import com.aqazadeh.ecommerce.model.Coupon;
-import com.aqazadeh.ecommerce.request.CreateCouponRequest;
-import com.aqazadeh.ecommerce.request.UpdateCouponRequest;
+import com.aqazadeh.ecommerce.dto.request.CreateCouponRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateCouponRequest;
 
 import java.util.List;
 

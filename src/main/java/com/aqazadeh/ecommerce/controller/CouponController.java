@@ -1,8 +1,8 @@
 package com.aqazadeh.ecommerce.controller;
 
-import com.aqazadeh.ecommerce.dto.CouponDto;
-import com.aqazadeh.ecommerce.request.CreateCouponRequest;
-import com.aqazadeh.ecommerce.request.UpdateCouponRequest;
+import com.aqazadeh.ecommerce.dto.response.CouponDto;
+import com.aqazadeh.ecommerce.dto.request.CreateCouponRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateCouponRequest;
 import com.aqazadeh.ecommerce.service.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

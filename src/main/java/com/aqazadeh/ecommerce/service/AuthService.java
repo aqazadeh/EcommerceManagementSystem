@@ -1,10 +1,9 @@
 package com.aqazadeh.ecommerce.service;
 
-import com.aqazadeh.ecommerce.dto.AuthDto;
-import com.aqazadeh.ecommerce.request.LoginRequest;
-import com.aqazadeh.ecommerce.request.UserRegisterRequest;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.aqazadeh.ecommerce.dto.request.ResetPasswordRequest;
+import com.aqazadeh.ecommerce.dto.response.AuthDto;
+import com.aqazadeh.ecommerce.dto.request.LoginRequest;
+import com.aqazadeh.ecommerce.dto.request.UserRegisterRequest;
 
 /**
  * Author: Rovshan Aghayev
@@ -15,7 +14,14 @@ import org.springframework.stereotype.Service;
 
 public interface AuthService {
     void register(UserRegisterRequest request);
+
     AuthDto login(LoginRequest request);
+
     AuthDto refreshToken(String token);
 
+    void activate(String token);
+
+    void resetPassword(String username);
+
+    void resetPasswordConfirm(ResetPasswordRequest request);
 }

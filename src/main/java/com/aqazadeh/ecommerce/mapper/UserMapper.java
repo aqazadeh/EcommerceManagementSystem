@@ -1,13 +1,13 @@
 package com.aqazadeh.ecommerce.mapper;
 
-import com.aqazadeh.ecommerce.dto.UserAddressDto;
-import com.aqazadeh.ecommerce.dto.UserDto;
+import com.aqazadeh.ecommerce.dto.response.UserAddressDto;
+import com.aqazadeh.ecommerce.dto.response.UserDto;
 import com.aqazadeh.ecommerce.model.User;
 import com.aqazadeh.ecommerce.model.UserAddress;
-import com.aqazadeh.ecommerce.request.CreateUserAddressRequest;
-import com.aqazadeh.ecommerce.request.UpdateUserAddressRequest;
-import com.aqazadeh.ecommerce.request.UpdateUserRequest;
-import com.aqazadeh.ecommerce.request.UserRegisterRequest;
+import com.aqazadeh.ecommerce.dto.request.CreateUserAddressRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateUserAddressRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateUserRequest;
+import com.aqazadeh.ecommerce.dto.request.UserRegisterRequest;
 import org.mapstruct.*;
 
 /**

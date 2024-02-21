@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"product", "order"})
+@ToString(exclude = {"product", "order", "variants"})
 @EqualsAndHashCode(of = "id")
 public class OrderItems {
     @Id
@@ -32,8 +32,8 @@ public class OrderItems {
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "inventory_id")
-    private Inventory inventory;
+    @JoinColumn(name = "variant_id")
+    private ProductVariant variants;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

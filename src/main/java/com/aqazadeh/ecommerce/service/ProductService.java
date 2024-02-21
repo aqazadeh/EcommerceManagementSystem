@@ -1,12 +1,9 @@
 package com.aqazadeh.ecommerce.service;
 
-import com.aqazadeh.ecommerce.dto.ProductDto;
+import com.aqazadeh.ecommerce.dto.response.ProductDto;
 import com.aqazadeh.ecommerce.model.Product;
 import com.aqazadeh.ecommerce.model.User;
-import com.aqazadeh.ecommerce.request.CreateDiscountRequest;
-import com.aqazadeh.ecommerce.request.CreateProductRequest;
-import com.aqazadeh.ecommerce.request.SearchProductRequest;
-import com.aqazadeh.ecommerce.request.UpdateProductRequest;
+import com.aqazadeh.ecommerce.dto.request.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -28,13 +25,13 @@ public interface ProductService {
 
     List<ProductDto> getAll(Integer page, String categorySlug);
 
-    void delete(User user, Long id);
+    List<ProductDto> getSellerAllProducts(Integer page, User user);
+
+    void deleteProduct(User user, Long id);
 
     List<ProductDto> search(Integer page, SearchProductRequest request);
 
     Product findById(Long id);
-
-    Product findBySlug(String slug);
 
     void addDiscount(User user, Long id, CreateDiscountRequest request);
 
@@ -42,5 +39,7 @@ public interface ProductService {
 
     void removeMedia(User user, Long productId, Long mediaId);
 
-    void removeDiscount(User user, Long productId, Long discountId);
+    void removeDiscount(User user, Long productId);
+
+    void updateDiscount(User user, Long productID, UpdateDiscountRequest request);
 }

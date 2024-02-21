@@ -6,12 +6,27 @@ spring:
     username: root
     password: root
     url: jdbc:postgresql://localhost:7878/ecommerce
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: example@gmail.com
+    password: (e. Google App Password)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 springdoc:
   api-docs:

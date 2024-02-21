@@ -1,23 +1,13 @@
 package com.aqazadeh.ecommerce.service.imp;
 
-import com.aqazadeh.ecommerce.dto.DiscountDto;
 import com.aqazadeh.ecommerce.mapper.DiscountMapper;
 import com.aqazadeh.ecommerce.model.Discount;
 import com.aqazadeh.ecommerce.repository.DiscountRepository;
-import com.aqazadeh.ecommerce.request.CreateDiscountRequest;
-import com.aqazadeh.ecommerce.request.UpdateDiscountRequest;
+import com.aqazadeh.ecommerce.dto.request.CreateDiscountRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateDiscountRequest;
 import com.aqazadeh.ecommerce.service.DiscountService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Page;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Author: Rovshan Aghayev

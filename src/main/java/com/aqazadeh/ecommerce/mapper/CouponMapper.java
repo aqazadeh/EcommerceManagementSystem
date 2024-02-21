@@ -1,13 +1,12 @@
 package com.aqazadeh.ecommerce.mapper;
 
-import com.aqazadeh.ecommerce.dto.CouponDto;
+import com.aqazadeh.ecommerce.dto.response.CouponDto;
 import com.aqazadeh.ecommerce.model.Coupon;
-import com.aqazadeh.ecommerce.request.CreateCouponRequest;
-import com.aqazadeh.ecommerce.request.UpdateCouponRequest;
+import com.aqazadeh.ecommerce.dto.request.CreateCouponRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateCouponRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.springframework.stereotype.Component;
 
 /**
  * Author: Rovshan Aghayev

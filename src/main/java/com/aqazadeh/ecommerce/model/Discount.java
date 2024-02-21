@@ -33,6 +33,11 @@ public class Discount {
 
     private LocalDateTime expiredTime;
 
+    @OneToOne
+    @JoinColumn(name = "product_id")
+    @ToString.Exclude
+    private Product product;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

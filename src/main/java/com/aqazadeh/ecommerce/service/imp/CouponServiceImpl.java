@@ -1,14 +1,14 @@
 package com.aqazadeh.ecommerce.service.imp;
 
-import com.aqazadeh.ecommerce.dto.CouponDto;
+import com.aqazadeh.ecommerce.dto.response.CouponDto;
 import com.aqazadeh.ecommerce.exception.ApplicationException;
 import com.aqazadeh.ecommerce.exception.ExceptionType;
 import com.aqazadeh.ecommerce.mapper.CouponMapper;
 import com.aqazadeh.ecommerce.model.Coupon;
 import com.aqazadeh.ecommerce.model.enums.CouponType;
 import com.aqazadeh.ecommerce.repository.CouponRepository;
-import com.aqazadeh.ecommerce.request.CreateCouponRequest;
-import com.aqazadeh.ecommerce.request.UpdateCouponRequest;
+import com.aqazadeh.ecommerce.dto.request.CreateCouponRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateCouponRequest;
 import com.aqazadeh.ecommerce.service.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

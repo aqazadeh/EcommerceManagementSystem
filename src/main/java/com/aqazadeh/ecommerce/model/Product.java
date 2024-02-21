@@ -20,7 +20,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"category", "inventory", "discount", "user"})
+@ToString(exclude = {"category", "variants", "discount", "user"})
 @EqualsAndHashCode(of = "id")
 public class Product {
     @Id
@@ -43,10 +43,9 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Inventory> inventory;
+    private List<ProductVariant> variants;
 
-    @ManyToOne
-    @JoinColumn(name = "discount_id")
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     private Discount discount;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)

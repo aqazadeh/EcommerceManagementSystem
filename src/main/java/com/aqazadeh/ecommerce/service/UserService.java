@@ -1,16 +1,14 @@
 package com.aqazadeh.ecommerce.service;
 
-import com.aqazadeh.ecommerce.dto.UserAddressDto;
-import com.aqazadeh.ecommerce.dto.UserDto;
+import com.aqazadeh.ecommerce.dto.response.UserAddressDto;
+import com.aqazadeh.ecommerce.dto.response.UserDto;
 import com.aqazadeh.ecommerce.model.User;
 import com.aqazadeh.ecommerce.model.UserAddress;
-import com.aqazadeh.ecommerce.request.CreateUserAddressRequest;
-import com.aqazadeh.ecommerce.request.UpdateUserAddressRequest;
-import com.aqazadeh.ecommerce.request.UpdateUserPasswordRequest;
-import com.aqazadeh.ecommerce.request.UpdateUserRequest;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.aqazadeh.ecommerce.dto.request.CreateUserAddressRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateUserAddressRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateUserPasswordRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateUserRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 
@@ -44,5 +42,9 @@ public interface UserService extends UserDetailsService {
 
     User findUserById(Long id);
 
+    void updateUser(User user);
+
     UserAddress findAddressById(Long addressId);
+
+    User findByConfirmationToken(String token);
 }

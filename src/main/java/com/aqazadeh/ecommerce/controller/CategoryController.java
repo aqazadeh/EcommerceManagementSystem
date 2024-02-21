@@ -1,12 +1,13 @@
 package com.aqazadeh.ecommerce.controller;
 
-import com.aqazadeh.ecommerce.dto.CategoryDto;
-import com.aqazadeh.ecommerce.request.CreateCategoryRequest;
-import com.aqazadeh.ecommerce.request.UpdateCategoryRequest;
+import com.aqazadeh.ecommerce.dto.response.CategoryDto;
+import com.aqazadeh.ecommerce.dto.request.CreateCategoryRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateCategoryRequest;
 import com.aqazadeh.ecommerce.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +23,15 @@ import java.util.List;
 @RequestMapping("/api/v1/category")
 public class CategoryController {
     private final CategoryService categoryService;
+
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> createCategory(@RequestBody CreateCategoryRequest request) {
         categoryService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateCategory(@PathVariable Long id, @RequestBody UpdateCategoryRequest request) {
         categoryService.update(id, request);
@@ -45,12 +49,13 @@ public class CategoryController {
         return ResponseEntity.ok(categoryDto);
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<CategoryDto>> getAllCategory() {
         List<CategoryDto> categoryDtoList = categoryService.getAll();
         return ResponseEntity.ok(categoryDtoList);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         categoryService.delete(id);

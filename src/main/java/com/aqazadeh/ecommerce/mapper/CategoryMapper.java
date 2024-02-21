@@ -1,9 +1,9 @@
 package com.aqazadeh.ecommerce.mapper;
 
-import com.aqazadeh.ecommerce.dto.CategoryDto;
+import com.aqazadeh.ecommerce.dto.response.CategoryDto;
 import com.aqazadeh.ecommerce.model.Category;
-import com.aqazadeh.ecommerce.request.CreateCategoryRequest;
-import com.aqazadeh.ecommerce.request.UpdateCategoryRequest;
+import com.aqazadeh.ecommerce.dto.request.CreateCategoryRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateCategoryRequest;
 import org.mapstruct.*;
 
 /**

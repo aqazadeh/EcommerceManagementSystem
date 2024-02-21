@@ -1,11 +1,14 @@
 package com.aqazadeh.ecommerce.service.imp;
 
+import com.aqazadeh.ecommerce.exception.ApplicationException;
+import com.aqazadeh.ecommerce.exception.ExceptionType;
 import com.aqazadeh.ecommerce.model.Media;
 import com.aqazadeh.ecommerce.model.Product;
 import com.aqazadeh.ecommerce.model.enums.MediaType;
 import com.aqazadeh.ecommerce.repository.MediaRepository;
 import com.aqazadeh.ecommerce.service.MediaService;
 import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,12 +38,14 @@ public class MediaServiceImpl implements MediaService {
             options.put("folder", "products");
             Map uploadedFile = cloudinary.uploader().upload(file.getBytes(), options);
             String publicId = (String) uploadedFile.get("public_id");
-//            String url = cloudinary.url().secure(true).generate(publicId);
-            return Media.builder()
+
+            Media media = Media.builder()
                     .mediaType(MediaType.IMAGE)
                     .url(publicId)
                     .product(product)
                     .build();
+            Media saved = mediaRepository.save(media);
+            return saved;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,6 +55,16 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public void delete(Long id) {
+        Media media = findById(id);
+        try {
+            cloudinary.uploader().destroy(media.getUrl(), ObjectUtils.emptyMap());
+            mediaRepository.delete(media);
+        } catch (IOException e) {
+            throw new ApplicationException(ExceptionType.MEDIA_NOT_REMOVED);
+        }
+    }
 
+    public Media findById(Long id) {
+        return mediaRepository.findById(id).orElseThrow(() -> new ApplicationException(ExceptionType.MEDIA_NOT_FOUND));
     }
 }

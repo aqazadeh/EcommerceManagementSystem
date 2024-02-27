@@ -1,17 +1,15 @@
 package com.aqazadeh.ecommerce.service.imp;
 
+import com.aqazadeh.ecommerce.dto.request.CreateCategoryRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateCategoryRequest;
 import com.aqazadeh.ecommerce.dto.response.CategoryDto;
 import com.aqazadeh.ecommerce.exception.ApplicationException;
 import com.aqazadeh.ecommerce.exception.ExceptionType;
 import com.aqazadeh.ecommerce.mapper.CategoryMapper;
 import com.aqazadeh.ecommerce.model.Category;
 import com.aqazadeh.ecommerce.repository.CategoryRepository;
-import com.aqazadeh.ecommerce.dto.request.CreateCategoryRequest;
-import com.aqazadeh.ecommerce.dto.request.UpdateCategoryRequest;
 import com.aqazadeh.ecommerce.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,12 +25,12 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-    private final CategoryRepository categoryRepository;
+    private final CategoryRepository repository;
     private final CategoryMapper categoryMapper;
 
     @Override
     public void create(CreateCategoryRequest request) {
-        Category category = categoryMapper.toCategory(request);
+        Category category = categoryMapper.toEntity(request);
         if (category.getSlug() == null) {
             String slug = category.getName() + new Random().nextInt(10);
             category.setSlug(slug);
@@ -41,18 +39,18 @@ public class CategoryServiceImpl implements CategoryService {
             Category parent = findById(request.parentId());
             category.setParent(parent);
         }
-        categoryRepository.save(category);
+        repository.save(category);
     }
 
     @Override
     public void update(Long id, UpdateCategoryRequest request) {
         Category category = findById(id);
-        Category newCategory = categoryMapper.toCategory(category, request);
+        Category newCategory = categoryMapper.toEntity(category, request);
         if (request.parentId() != null) {
             Category parent = findById(request.parentId());
             newCategory.setParent(parent);
         }
-        categoryRepository.save(newCategory);
+        repository.save(newCategory);
     }
 
     @Override
@@ -60,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto getById(Long id) {
         Category category = findById(id);
 
-        return categoryMapper.toCategoryDto(category);
+        return categoryMapper.toDto(category);
     }
 
     @Override
@@ -68,32 +66,32 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto getBySlug(String slug) {
         Category category = findBySlug(slug);
 
-        return categoryMapper.toCategoryDto(category);
+        return categoryMapper.toDto(category);
     }
 
     @Override
     @Transactional
     public List<CategoryDto> getAll() {
-        List<Category> categories = categoryRepository.findByParentIsNull();
-        return categories.stream().map(categoryMapper::toCategoryDto).toList();
+        List<Category> categories = repository.findByParentIsNull();
+        return categories.stream().map(categoryMapper::toDto).toList();
     }
 
     @Override
     public void delete(Long id) {
         Category category = findById(id);
-        categoryRepository.delete(category);
+        repository.delete(category);
     }
 
     @Override
     public Category findById(Long id) {
-        return categoryRepository
+        return repository
                 .findById(id).
                 orElseThrow(() -> new ApplicationException(ExceptionType.CATEGORY_NOT_FOUND));
     }
 
     @Override
     public Category findBySlug(String slug) {
-        return categoryRepository
+        return repository
                 .findBySlug(slug).
                 orElseThrow(() -> new ApplicationException(ExceptionType.CATEGORY_NOT_FOUND));
     }

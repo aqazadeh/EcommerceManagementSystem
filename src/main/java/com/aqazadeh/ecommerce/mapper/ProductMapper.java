@@ -27,6 +27,7 @@ public interface ProductMapper {
     @Mappings(value = {
             @Mapping(target = "variants", qualifiedByName = "variantToDto"),
             @Mapping(target = "media", qualifiedByName = "mediaToDto")
+
     })
     @Named("productToEntity")
     ProductDto toDto(Product product);

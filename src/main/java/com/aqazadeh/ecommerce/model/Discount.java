@@ -3,7 +3,6 @@ package com.aqazadeh.ecommerce.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -16,8 +15,8 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Discount {
     @Id
@@ -33,12 +32,11 @@ public class Discount {
 
     private LocalDateTime expiredTime;
 
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
     @OneToOne
     @JoinColumn(name = "product_id")
     @ToString.Exclude
     private Product product;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
 }

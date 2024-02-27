@@ -14,13 +14,11 @@ import java.util.List;
  */
 @Entity
 @Table(name = "product_orders")
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = {"coupon", "user", "orderItems"})
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,12 +29,15 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "coupon_id")
+    @ToString.Exclude
     private Coupon coupon;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order")
+    @ToString.Exclude
     private List<OrderItems> orderItems;
 }

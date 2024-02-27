@@ -1,9 +1,9 @@
 package com.aqazadeh.ecommerce.service;
 
+import com.aqazadeh.ecommerce.dto.request.*;
 import com.aqazadeh.ecommerce.dto.response.ProductDto;
 import com.aqazadeh.ecommerce.model.Product;
 import com.aqazadeh.ecommerce.model.User;
-import com.aqazadeh.ecommerce.dto.request.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -41,5 +41,5 @@ public interface ProductService {
 
     void removeDiscount(User user, Long productId);
 
-    void updateDiscount(User user, Long productID, UpdateDiscountRequest request);
+    void updateDiscount(User user, Long productID, Long discountId, UpdateDiscountRequest request);
 }

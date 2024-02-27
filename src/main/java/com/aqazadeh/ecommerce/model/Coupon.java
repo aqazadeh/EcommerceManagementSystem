@@ -21,12 +21,14 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of = "id")
 public class Coupon {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Enumerated(EnumType.STRING)
     private CouponType couponType;
 
     private Integer percentCount;
+
     private Double cashCount;
 
     @Column(unique = true)
@@ -41,4 +43,9 @@ public class Coupon {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private User creator;
 }

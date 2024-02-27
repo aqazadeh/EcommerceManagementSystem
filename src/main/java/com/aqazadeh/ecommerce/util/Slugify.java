@@ -39,22 +39,15 @@ public class Slugify {
     }
 
     private Character changeLettersToEng(Character character) {
-        switch (character) {
-            case 'ə':
-                return 'e';
-            case 'ı':
-                return 'i';
-            case 'ö':
-                return 'o';
-            case 'ü':
-                return 'u';
-            case 'ç':
-                return 'c';
-            case 'ş':
-                return 's';
-            default:
-                return character;
-        }
+        return switch (character) {
+            case 'ə' -> 'e';
+            case 'ı' -> 'i';
+            case 'ö' -> 'o';
+            case 'ü' -> 'u';
+            case 'ç' -> 'c';
+            case 'ş' -> 's';
+            default -> character;
+        };
     }
 
 

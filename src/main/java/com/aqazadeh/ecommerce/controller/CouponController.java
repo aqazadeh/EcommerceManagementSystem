@@ -1,15 +1,17 @@
 package com.aqazadeh.ecommerce.controller;
 
-import com.aqazadeh.ecommerce.dto.response.CouponDto;
 import com.aqazadeh.ecommerce.dto.request.CreateCouponRequest;
 import com.aqazadeh.ecommerce.dto.request.UpdateCouponRequest;
+import com.aqazadeh.ecommerce.dto.response.CouponDto;
+import com.aqazadeh.ecommerce.model.User;
 import com.aqazadeh.ecommerce.service.CouponService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Author: Rovshan Aghayev
@@ -21,34 +23,48 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/coupon")
 public class CouponController {
-    private final CouponService couponService;
+    private final CouponService service;
+
     @PostMapping
-    public ResponseEntity<Void> createCoupon(@RequestBody CreateCouponRequest request) {
-        couponService.create(request);
+    @PreAuthorize("hasRole('USER') and hasRole('SELLER')")
+    public ResponseEntity<Void> createCoupon(
+            @AuthenticationPrincipal User user,
+            @RequestBody @Valid CreateCouponRequest request
+    ) {
+        service.create(user, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id,@RequestBody UpdateCouponRequest request){
-        couponService.update(id, request);
+    @PreAuthorize("hasRole('USER') and hasRole('SELLER')")
+    public ResponseEntity<Void> update(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long id,
+            @RequestBody UpdateCouponRequest request
+    ) {
+        service.update(user, id, request);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping
-    public ResponseEntity<List<CouponDto>> getAll(@RequestParam Integer page) {
-        List<CouponDto> couponDtoList = couponService.getAll(page);
-        return ResponseEntity.ok(couponDtoList);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CouponDto> getById(@PathVariable Long id) {
-        CouponDto couponDtoList = couponService.getById(id);
+        CouponDto couponDtoList = service.getById(id);
+        return ResponseEntity.ok(couponDtoList);
+    }
+
+    @GetMapping("/code/{code}")
+    public ResponseEntity<CouponDto> getByCode(@PathVariable String code) {
+        CouponDto couponDtoList = service.getByCode(code);
         return ResponseEntity.ok(couponDtoList);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id,@RequestBody UpdateCouponRequest request){
-        couponService.delete(id, request);
+    @PreAuthorize("hasRole('USER') and hasRole('SELLER')")
+    public ResponseEntity<Void> delete(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long id
+    ) {
+        service.delete(user, id);
         return ResponseEntity.noContent().build();
     }
 }

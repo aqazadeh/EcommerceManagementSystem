@@ -13,12 +13,11 @@ import com.aqazadeh.ecommerce.repository.CartRepository;
 import com.aqazadeh.ecommerce.service.CartService;
 import com.aqazadeh.ecommerce.service.ProductService;
 import com.aqazadeh.ecommerce.service.UserService;
+import com.aqazadeh.ecommerce.service.VariantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,44 +31,41 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class CartServiceImpl implements CartService {
+
+    private final CartRepository repository;
+
     private final ProductService productService;
+    private final VariantService variantService;
     private final UserService userService;
-    private final CartRepository cartRepository;
+
+
     private final CartMapper cartMapper;
 
     @Override
     public void addToCart(User user, CreateCartRequest request) {
-        List<Cart> cartList = user.getCart();
-
         Product product = productService.findById(request.productId());
-
-        ProductVariant variant = product.getVariants().stream()
-                .filter(var -> var.getId().equals(request.variantId()))
-                .findFirst()
-                .orElseThrow(() -> new ApplicationException(ExceptionType.VARIANT_NOT_FOUND));
+        ProductVariant variant = variantService.findById(request.variantId());
 
         if (variant.getQuantity() < request.quantity()) {
             throw new ApplicationException(ExceptionType.STOCK_IS_ENDED);
         }
 
-        Optional<Cart> cart = cartList.stream()
-                .filter(cartItem -> cartItem.getVariant().equals(variant))
-                .findFirst();
+        Optional<Cart> cart = repository.findByVariantAndUser(variant, user);
 
+        Cart newCart;
         if (cart.isEmpty()) {
-            Cart build = Cart.builder()
+            newCart = Cart.builder()
                     .user(user)
                     .quantity(request.quantity())
                     .product(product)
                     .variant(variant)
                     .build();
-            cartList.add(build);
         } else {
-            Cart build = cart.get();
-            build.setQuantity(build.getQuantity() + request.quantity());
+            newCart = cart.get();
+            newCart.setQuantity(newCart.getQuantity() + request.quantity());
         }
 
-        userService.updateUser(user);
+        repository.save(newCart);
 
     }
 
@@ -83,7 +79,7 @@ public class CartServiceImpl implements CartService {
     public void removeFromCart(User user, Long itemId) {
         Cart cart = findById(itemId);
         if (cart.getUser().equals(user))
-            cartRepository.delete(cart);
+            repository.delete(cart);
         else
             throw new ApplicationException(ExceptionType.CART_ITEM_NOT_FOUND);
 
@@ -91,13 +87,12 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void clearCart(User user) {
-        user.setCart(new ArrayList<>());
-        userService.updateUser(user);
+        repository.deleteAll(user.getCart());
     }
 
     @Override
     public Cart findById(Long id) {
-        return cartRepository.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new ApplicationException(ExceptionType.CART_ITEM_NOT_FOUND));
     }
 }

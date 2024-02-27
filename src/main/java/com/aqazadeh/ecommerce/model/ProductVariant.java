@@ -14,12 +14,10 @@ import java.time.LocalDateTime;
  * Time: 16:19
  */
 @Entity
-@Getter
-@Setter
+@Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"product"})
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class ProductVariant {
 
@@ -41,5 +39,6 @@ public class ProductVariant {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
+    @ToString.Exclude
     private Product product;
 }

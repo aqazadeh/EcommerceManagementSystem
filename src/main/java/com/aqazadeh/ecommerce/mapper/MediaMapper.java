@@ -2,6 +2,7 @@ package com.aqazadeh.ecommerce.mapper;
 
 import com.aqazadeh.ecommerce.dto.response.MediaDto;
 import com.aqazadeh.ecommerce.model.Media;
+import com.cloudinary.Cloudinary;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -14,9 +15,14 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
  */
 @Mapper(
         componentModel = "spring",
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        uses = {
+                Cloudinary.class
+        }
 )
+
 public interface MediaMapper {
     @Named("mediaToDto")
     MediaDto toDto(Media media);
+
 }

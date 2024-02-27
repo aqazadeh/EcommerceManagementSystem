@@ -1,6 +1,5 @@
 package com.aqazadeh.ecommerce;
 
-import com.aqazadeh.ecommerce.util.Slugify;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

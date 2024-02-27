@@ -1,7 +1,11 @@
 package com.aqazadeh.ecommerce.repository;
 
 import com.aqazadeh.ecommerce.model.Cart;
+import com.aqazadeh.ecommerce.model.ProductVariant;
+import com.aqazadeh.ecommerce.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 /**
  * Author: Rovshan Aghayev
@@ -11,4 +15,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
+    Optional<Cart> findByVariantAndUser(ProductVariant variant, User user);
 }

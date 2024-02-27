@@ -1,11 +1,10 @@
 package com.aqazadeh.ecommerce.service;
 
-import com.aqazadeh.ecommerce.dto.response.CouponDto;
-import com.aqazadeh.ecommerce.model.Coupon;
 import com.aqazadeh.ecommerce.dto.request.CreateCouponRequest;
 import com.aqazadeh.ecommerce.dto.request.UpdateCouponRequest;
-
-import java.util.List;
+import com.aqazadeh.ecommerce.dto.response.CouponDto;
+import com.aqazadeh.ecommerce.model.Coupon;
+import com.aqazadeh.ecommerce.model.User;
 
 /**
  * Author: Rovshan Aghayev
@@ -15,17 +14,17 @@ import java.util.List;
  */
 
 public interface CouponService {
-    void create(CreateCouponRequest request);
+    void create(User user, CreateCouponRequest request);
 
-    void update(Long id, UpdateCouponRequest request);
-
-    List<CouponDto> getAll(Integer page);
+    void update(User user, Long id, UpdateCouponRequest request);
 
     CouponDto getById(Long id);
 
-    void delete(Long id, UpdateCouponRequest request);
+    CouponDto getByCode(String code);
+
+    void delete(User user, Long id);
 
     Coupon findById(Long id);
 
-    Coupon getByCode(String code);
+    Coupon findByCode(String code);
 }

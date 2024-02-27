@@ -15,12 +15,10 @@ import java.util.List;
  * Time: 16:14
  */
 @Entity
-@Getter
-@Setter
+@Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"products", "parent"})
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Category {
     @Id
@@ -41,14 +39,16 @@ public class Category {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "category_id")
+    @ToString.Exclude
     private Category parent;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent")
+    @ToString.Exclude
     private List<Category> children;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category")
+    @ToString.Exclude
     private List<Product> products;
-
 }

@@ -1,8 +1,8 @@
 package com.aqazadeh.ecommerce.controller;
 
+import com.aqazadeh.ecommerce.dto.request.*;
 import com.aqazadeh.ecommerce.dto.response.ProductDto;
 import com.aqazadeh.ecommerce.model.User;
-import com.aqazadeh.ecommerce.dto.request.*;
 import com.aqazadeh.ecommerce.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -55,6 +55,7 @@ public class ProductController {
         return ResponseEntity.ok(productDto);
     }
 
+
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAll(
             @RequestParam(required = false, defaultValue = "0") Integer page,
@@ -76,7 +77,7 @@ public class ProductController {
 
     @GetMapping("/search")
     public ResponseEntity<List<ProductDto>> searchProduct(
-            @RequestParam Integer page,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestBody SearchProductRequest request
     ) {
         List<ProductDto> productDtoList = productService.search(page, request);
@@ -98,9 +99,10 @@ public class ProductController {
     public ResponseEntity<Void> updateDiscount(
             @AuthenticationPrincipal User user,
             @PathVariable Long productID,
+            @PathVariable Long discountId,
             @RequestBody UpdateDiscountRequest request
     ) {
-        productService.updateDiscount(user, productID, request);
+        productService.updateDiscount(user, productID, discountId, request);
         return ResponseEntity.ok().build();
     }
 
@@ -135,4 +137,6 @@ public class ProductController {
         productService.removeMedia(user, productId, mediaId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="createTable category" author="Rovshan Aghayev">
+        <createTable tableName="category">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_category"/>
+            </column>
+            <column name="slug" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="about" type="oid"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+            <column name="category_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="addUniqueConstraint slug on category" author="Rovshan Aghayev">
+        <addUniqueConstraint columnNames="slug" constraintName="uc_category_slug" tableName="category"/>
+    </changeSet>
+
+    <changeSet id="addForeignKeyConstraint category on category" author="Rovshan Aghayev">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="category"
+                                 constraintName="FK_CATEGORY_ON_CATEGORY_ID" referencedColumnNames="id"
+                                 referencedTableName="category"/>
+    </changeSet>
+</databaseChangeLog>

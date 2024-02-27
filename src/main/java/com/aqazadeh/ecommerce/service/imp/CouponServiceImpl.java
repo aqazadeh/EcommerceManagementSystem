@@ -1,22 +1,19 @@
 package com.aqazadeh.ecommerce.service.imp;
 
+import com.aqazadeh.ecommerce.dto.request.CreateCouponRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateCouponRequest;
 import com.aqazadeh.ecommerce.dto.response.CouponDto;
 import com.aqazadeh.ecommerce.exception.ApplicationException;
 import com.aqazadeh.ecommerce.exception.ExceptionType;
 import com.aqazadeh.ecommerce.mapper.CouponMapper;
 import com.aqazadeh.ecommerce.model.Coupon;
+import com.aqazadeh.ecommerce.model.User;
 import com.aqazadeh.ecommerce.model.enums.CouponType;
 import com.aqazadeh.ecommerce.repository.CouponRepository;
-import com.aqazadeh.ecommerce.dto.request.CreateCouponRequest;
-import com.aqazadeh.ecommerce.dto.request.UpdateCouponRequest;
 import com.aqazadeh.ecommerce.service.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Author: Rovshan Aghayev
@@ -28,14 +25,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CouponServiceImpl implements CouponService {
 
-    private final CouponRepository couponRepository;
+    private final CouponRepository repository;
     private final CouponMapper couponMapper;
     @Value("${pagination.limit}")
     private Integer limit;
 
     @Override
-    public void create(CreateCouponRequest request) {
-        if (couponRepository.findByCode(request.code()).isPresent()) {
+    public void create(User user, CreateCouponRequest request) {
+        if (repository.findByCode(request.code()).isPresent()) {
             throw new ApplicationException(ExceptionType.COUPON_CODE_ALREADY_EXISTS);
         }
 
@@ -49,13 +46,17 @@ public class CouponServiceImpl implements CouponService {
                 throw new ApplicationException(ExceptionType.COUPON_CREATE_ERROR);
         }
 
-        Coupon coupon = couponMapper.toCoupon(request);
-        couponRepository.save(coupon);
+        Coupon coupon = couponMapper.toEntity(request);
+        coupon.setCreator(user);
+        repository.save(coupon);
     }
 
     @Override
-    public void update(Long id, UpdateCouponRequest request) {
+    public void update(User user, Long id, UpdateCouponRequest request) {
         Coupon coupon = findById(id);
+
+        if (!coupon.getCreator().equals(user))
+            throw new ApplicationException(ExceptionType.COUPON_NOT_FOUND);
 
         if (request.couponType() == CouponType.PERCENT) {
             if (request.percentCount() == null)
@@ -66,38 +67,39 @@ public class CouponServiceImpl implements CouponService {
             if (request.cashCount() == null)
                 throw new ApplicationException(ExceptionType.COUPON_CREATE_ERROR);
         }
-        Coupon updatedCoupon = couponMapper.toCoupon(coupon, request);
-        couponRepository.save(updatedCoupon);
-    }
-
-    @Override
-    public List<CouponDto> getAll(Integer page) {
-
-        Pageable pageable = PageRequest.of(page, limit);
-        List<Coupon> coupons = couponRepository.findAll(pageable).toList();
-        return coupons.stream().map(couponMapper::toCouponDto).toList();
+        Coupon updatedCoupon = couponMapper.toEntity(coupon, request);
+        repository.save(updatedCoupon);
     }
 
     @Override
     public CouponDto getById(Long id) {
         Coupon coupon = findById(id);
-        return couponMapper.toCouponDto(coupon);
+        return couponMapper.toDto(coupon);
     }
 
     @Override
-    public void delete(Long id, UpdateCouponRequest request) {
+    public CouponDto getByCode(String code) {
+        return couponMapper.toDto(findByCode(code));
+    }
+
+    @Override
+    public void delete(User user, Long id) {
         Coupon coupon = findById(id);
-        couponRepository.delete(coupon);
+
+        if (!coupon.getCreator().equals(user))
+            throw new ApplicationException(ExceptionType.COUPON_NOT_FOUND);
+
+        repository.delete(coupon);
     }
 
     @Override
     public Coupon findById(Long id) {
-        return couponRepository.findById(id).orElseThrow(() -> new ApplicationException(ExceptionType.COUPON_NOT_FOUND));
+        return repository.findById(id).orElseThrow(() -> new ApplicationException(ExceptionType.COUPON_NOT_FOUND));
     }
 
     @Override
-    public Coupon getByCode(String code) {
-        return couponRepository.findByCode(code).orElseThrow(() -> new ApplicationException(ExceptionType.COUPON_NOT_FOUND));
+    public Coupon findByCode(String code) {
+        return repository.findByCode(code).orElseThrow(() -> new ApplicationException(ExceptionType.COUPON_NOT_FOUND));
     }
 
 

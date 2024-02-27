@@ -1,10 +1,12 @@
 package com.aqazadeh.ecommerce.mapper;
 
-import com.aqazadeh.ecommerce.dto.response.CategoryDto;
-import com.aqazadeh.ecommerce.model.Category;
 import com.aqazadeh.ecommerce.dto.request.CreateCategoryRequest;
 import com.aqazadeh.ecommerce.dto.request.UpdateCategoryRequest;
-import org.mapstruct.*;
+import com.aqazadeh.ecommerce.dto.response.CategoryDto;
+import com.aqazadeh.ecommerce.model.Category;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 /**
  * Author: Rovshan Aghayev
@@ -15,8 +17,10 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CategoryMapper {
 
-    CategoryDto toCategoryDto(Category category);
-    Category toCategory(CreateCategoryRequest request);
-    Category toCategory(@MappingTarget Category category, UpdateCategoryRequest request);
+    CategoryDto toDto(Category category);
+
+    Category toEntity(CreateCategoryRequest request);
+
+    Category toEntity(@MappingTarget Category category, UpdateCategoryRequest request);
 
 }

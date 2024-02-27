@@ -2,49 +2,19 @@ server:
   port: 8080
 
 spring:
-  datasource:
-    username: root
-    password: root
-    url: jdbc:postgresql://localhost:7878/ecommerce
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: example@gmail.com
-    password: (e. Google App Password)
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+  profiles:
+    include:
+      - db
+      - mail
+      - swagger
+      - cloudinary
+      - custom
   servlet:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
-
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    operations-sorter: method
-    disable-swagger-default-url: true
-    path: /api
-    layout: BaseLayout
-
-pagination:
-  limit: 10
-
-cloudinary:
-  cloud_name: djspnhmis
-  api_key: 698238153119261
-  api_secret: xk7xo80WnUpZxyC0vjyBaLBVloM
+  liquibase:
+    enabled: true
+    change-log: db/change-log.xml
 
 
-Jwt:
-  key: MIIBOwIBAAJBAL+vXeAsuA999PYOhN08hVBN5kMV8gPzPBpYHvml1t/5EavOX8mgBvEG+bfUIymeNkUlLV/nOrLs2OtgQRYOiksCAwEAAQJAHlGgqZqpKloj6t91CIFQHNmVeDr6YsGQWiJiE961VAuNN+/q62K6xswb65Hcodo9hAgL7mMmI44K6a5etzmEwQIhAOEiMKisNON7y6FfH1q2vJceEFA3dqI/4G57UeJCNlYRAiEA2fcwfOYO9/R+ZuzWwodbiY/BJRybwFdJG3diRy27jpsCIQDgVwuZ6RBC5yeBRKKf6JyBEco7xSkIgRKJxYVRK52toQIgYVZdZfmLR7n81NQBmD/AZi83bu5Ws8+HC2gGEIlgz+8CIQDTi6xJyZibOfxVVF2YSTST4A6wM1Ya1irEccoVVCJxng==

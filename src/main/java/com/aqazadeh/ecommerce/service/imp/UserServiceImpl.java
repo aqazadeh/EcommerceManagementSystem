@@ -1,25 +1,22 @@
 package com.aqazadeh.ecommerce.service.imp;
 
-import com.aqazadeh.ecommerce.dto.response.UserAddressDto;
+import com.aqazadeh.ecommerce.dto.request.UpdateUserPasswordRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateUserRequest;
+import com.aqazadeh.ecommerce.dto.response.SessionDto;
 import com.aqazadeh.ecommerce.dto.response.UserDto;
 import com.aqazadeh.ecommerce.exception.ApplicationException;
 import com.aqazadeh.ecommerce.exception.ExceptionType;
+import com.aqazadeh.ecommerce.mapper.SessionMapper;
 import com.aqazadeh.ecommerce.mapper.UserMapper;
+import com.aqazadeh.ecommerce.model.Session;
 import com.aqazadeh.ecommerce.model.User;
-import com.aqazadeh.ecommerce.model.UserAddress;
-import com.aqazadeh.ecommerce.repository.UserAddressRepository;
 import com.aqazadeh.ecommerce.repository.UserRepository;
-import com.aqazadeh.ecommerce.dto.request.CreateUserAddressRequest;
-import com.aqazadeh.ecommerce.dto.request.UpdateUserAddressRequest;
-import com.aqazadeh.ecommerce.dto.request.UpdateUserPasswordRequest;
-import com.aqazadeh.ecommerce.dto.request.UpdateUserRequest;
 import com.aqazadeh.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -35,9 +32,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final UserAddressRepository userAddressRepository;
+    private final SessionMapper sessionMapper;
     private final UserMapper userMapper;
+
+    private final UserRepository repository;
 
     @Value("${pagination.limit}")
     private Integer paginationLimit;
@@ -45,106 +43,58 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long id) {
         User user = findUserById(id);
-        return userMapper.toUserDto(user);
+        return userMapper.toDto(user);
     }
 
     @Override
     public List<UserDto> getUsers(Integer page) {
         Pageable pageable = PageRequest.of(page, paginationLimit);
-        List<User> all = userRepository.findAll(pageable).stream().toList();
-        return all.stream().map(userMapper::toUserDto).toList();
+        List<User> all = repository.findAll(pageable).stream().toList();
+        return all.stream().map(userMapper::toDto).toList();
     }
 
     @Override
-    public void updateUser(UpdateUserRequest request, Long userId) {
-        User user = findUserById(userId);
-        User convertedUser = userMapper.toUser(user, request);
-        userRepository.save(convertedUser);
+    public void updateUser(User user, UpdateUserRequest request) {
+        User convertedUser = userMapper.toEntity(user, request);
+        repository.save(convertedUser);
     }
 
     @Override
-    public void updateUserPassword(Long userId, UpdateUserPasswordRequest request) {
-        User user = findUserById(userId);
-        if(!user.getPassword().equals(request.oldPassword()))
+    public void updateUserPassword(User user, UpdateUserPasswordRequest request) {
+        if (!user.getPassword().equals(request.oldPassword()))
             throw new ApplicationException(ExceptionType.USER_INVALID_PASSWORD);
         if (!request.newPassword().equals(request.newRepeatedPassword()))
             throw new ApplicationException(ExceptionType.PASSWORD_NOT_MATCH);
         user.setPassword(request.newPassword());
-        userRepository.save(user);
+        repository.save(user);
     }
 
     @Override
-    public void deleteUser(Long id) {
-        User user = findUserById(id);
-        userRepository.delete(user);
+    public void deleteUser(User user) {
+        repository.delete(user);
     }
 
-    @Override
-    public UserAddressDto getUserAddress(Long userId, Long addressId) {
-        UserAddress address = findAddressById(addressId);
-        if(!address.getUser().getId().equals(userId))
-            throw new ApplicationException(ExceptionType.ADDRESS_NOT_FOUND);
-
-        return userMapper.toAddressDto(address);
-    }
-
-    @Override
-    public List<UserAddressDto> getUserAllAddresses(Long userId) {
-        List<UserAddress> addresses = findUserById(userId).getAddresses();
-        return addresses.stream().map(userMapper::toAddressDto).toList();
-    }
-
-    @Override
-    public void createUserAddress(Long userId, CreateUserAddressRequest request) {
-        User user = findUserById(userId);
-        UserAddress address = userMapper.toAddress(request);
-        address.setUser(user);
-        userAddressRepository.save(address);
-    }
-
-    @Override
-    public void updateUserAddress(Long userId, Long addressId, UpdateUserAddressRequest request) {
-        UserAddress address = findAddressById(addressId);
-        if (!address.getUser().getId().equals(userId))
-            throw new ApplicationException(ExceptionType.ADDRESS_NOT_FOUND);
-
-        UserAddress userMapperAddress = userMapper.toAddress(address, request);
-        userAddressRepository.save(userMapperAddress);
-    }
-
-    @Override
-    public void deleteUserAddress(Long userId, Long addressId) {
-        UserAddress address = findAddressById(addressId);
-        if (!address.getUser().getId().equals(userId))
-            throw new ApplicationException(ExceptionType.ADDRESS_NOT_FOUND);
-        userAddressRepository.delete(address);
-    }
 
     @Override
     public User findUserById(Long id) {
-        return userRepository.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new ApplicationException(ExceptionType.USER_NOT_FOUND));
     }
 
     @Override
-    public void updateUser(User user) {
-        userRepository.save(user);
-    }
-
-    @Override
-    public UserAddress findAddressById(Long addressId) {
-        return userAddressRepository.findById(addressId)
-                .orElseThrow(() -> new ApplicationException(ExceptionType.ADDRESS_NOT_FOUND));
-    }
-
-    @Override
     public User findByConfirmationToken(String token) {
-        return userRepository.findByConfirmationToken(token).orElseThrow(() -> new ApplicationException(ExceptionType.INVALID_ACTIVATION_TOKEN));
+        return repository.findByConfirmationToken(token).orElseThrow(() -> new ApplicationException(ExceptionType.INVALID_ACTIVATION_TOKEN));
+    }
+
+    @Override
+    public List<SessionDto> getSessions(User user) {
+        List<Session> sessions = user.getSessions();
+        return sessions.stream().map(sessionMapper::toDto).toList();
     }
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
+        return repository.findByUsername(username)
                 .orElseThrow(() -> new ApplicationException(ExceptionType.USER_NOT_FOUND));
     }
 }

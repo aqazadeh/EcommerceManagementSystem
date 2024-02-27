@@ -1,0 +1,4 @@
+cloudinary:
+  cloud_name: [ CLOUDINAY_CLOUD_NAME ]
+  api_key: [ CLOUDINAY_API_KEY ]
+  api_secret: [ CLOUDINAY_API_SECRET ]

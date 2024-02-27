@@ -13,12 +13,10 @@ import java.time.LocalDateTime;
  * Time: 16:56
  */
 @Entity
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"product", "order", "variants"})
 @EqualsAndHashCode(of = "id")
 public class OrderItems {
     @Id
@@ -27,18 +25,21 @@ public class OrderItems {
 
     private Integer quantity;
 
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @ToString.Exclude
     private Product product;
 
     @ManyToOne
     @JoinColumn(name = "variant_id")
+    @ToString.Exclude
     private ProductVariant variants;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @ToString.Exclude
     private Order order;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
 }

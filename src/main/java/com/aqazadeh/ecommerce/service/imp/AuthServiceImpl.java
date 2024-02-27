@@ -10,12 +10,13 @@ import com.aqazadeh.ecommerce.mapper.UserMapper;
 import com.aqazadeh.ecommerce.model.User;
 import com.aqazadeh.ecommerce.repository.UserRepository;
 import com.aqazadeh.ecommerce.service.AuthService;
+import com.aqazadeh.ecommerce.service.SessionService;
 import com.aqazadeh.ecommerce.service.TokenService;
 import com.aqazadeh.ecommerce.service.UserService;
 import com.aqazadeh.ecommerce.util.MailUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,43 +27,50 @@ import java.util.UUID;
 /**
  * Author: Rovshan Aghayev
  * Version: v1.0
- * Date: 31.01.2024
- * Time: 19:02
+ * Date: 27.02.2024
+ * Time: 01:31
  */
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class AuthServiceImpl implements AuthService {
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+
+    private final UserRepository repository;
     private final UserMapper userMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
+
     private final TokenService tokenService;
     private final UserService userService;
+    private final SessionService sessionService;
+
     private final MailUtil mailUtil;
 
     @Override
     public void register(UserRegisterRequest request) {
-        if (userRepository.findByUsernameAndEmail(request.username(), request.email()).isPresent())
+        if (repository.findByUsernameAndEmail(request.username(), request.email()).isPresent())
             throw new ApplicationException(ExceptionType.USERNAME_OR_EMAIL_EXISTS);
-        User convert = userMapper.toUser(request);
+        User convert = userMapper.toEntity(request);
         String password = passwordEncoder.encode(request.password());
         convert.setPassword(password);
+
         String key = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes());
+
         convert.setConfirmationToken(key);
+
         mailUtil.sendMessage(convert.getEmail(), "Eshop account activation", key);
-        User user = userRepository.save(convert);
+        repository.save(convert);
 
     }
 
     @Override
     @Transactional
-    public AuthDto login(LoginRequest request) {
+    public AuthDto login(LoginRequest request, HttpServletRequest servletRequest) {
         String username = request.username();
-        String password = passwordEncoder.encode(request.password());
-        User user = userRepository.findByUsername(username)
+        User user = repository.findByUsername(username)
                 .orElseThrow(() -> new ApplicationException(ExceptionType.USER_NOT_FOUND));
 
-        if (!passwordEncoder.matches(password, user.getPassword()))
+        if (!passwordEncoder.matches(request.password(), user.getPassword()))
             throw new ApplicationException(ExceptionType.USER_INVALID_PASSWORD);
 
         if (!user.isEnabled()) {
@@ -72,20 +80,13 @@ public class AuthServiceImpl implements AuthService {
         if (user.isAccountNonLocked()) {
             throw new ApplicationException(ExceptionType.USER_IS_LOCKED);
         }
-
-        String accessToken = tokenService.generateToken(user.getUsername(), 7200);
-        String refreshToken = tokenService.generateToken(user.getUsername(), 604800);
-        return new AuthDto(accessToken, refreshToken);
+        return sessionService.create(user, servletRequest);
 
     }
 
     @Override
-    public AuthDto refreshToken(String token) {
-        String username = tokenService.getClaims(token).getSubject();
-        UserDetails user = userService.loadUserByUsername(username);
-        String accessToken = tokenService.generateToken(user.getUsername(), 7200);
-        String refreshToken = tokenService.generateToken(user.getUsername(), 604800);
-        return new AuthDto(accessToken, refreshToken);
+    public AuthDto refreshToken(String token, HttpServletRequest request) {
+        return sessionService.refreshToken(token, request);
     }
 
     @Override
@@ -93,7 +94,7 @@ public class AuthServiceImpl implements AuthService {
         User user = userService.findByConfirmationToken(token);
         user.setConfirmationToken(null);
         user.setEnabled(true);
-        userRepository.save(user);
+        repository.save(user);
     }
 
     @Override
@@ -102,7 +103,7 @@ public class AuthServiceImpl implements AuthService {
         String key = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes());
         user.setConfirmationToken(key);
         mailUtil.sendMessage(user.getEmail(), "Eshop password reset", key);
-        userRepository.save(user);
+        repository.save(user);
     }
 
     @Override
@@ -114,8 +115,6 @@ public class AuthServiceImpl implements AuthService {
         User user = userService.findByConfirmationToken(request.token());
         user.setPassword(password);
         user.setConfirmationToken(null);
-        userRepository.save(user);
+        repository.save(user);
     }
-
-
 }

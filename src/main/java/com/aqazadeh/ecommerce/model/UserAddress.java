@@ -14,12 +14,10 @@ import java.time.LocalDateTime;
  * Time: 15:57
  */
 @Entity
-@Getter
-@Setter
+@Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"user"})
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class UserAddress {
     @Id
@@ -42,5 +40,6 @@ public class UserAddress {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private User user;
 }

@@ -1,7 +1,5 @@
 package com.aqazadeh.ecommerce.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 /**
  * Author: Rovshan Aghayev
  * Version: v1.0

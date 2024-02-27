@@ -1,5 +1,6 @@
 package com.aqazadeh.ecommerce.model;
 
+import com.aqazadeh.ecommerce.model.enums.MediaRelationType;
 import com.aqazadeh.ecommerce.model.enums.MediaType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,12 +16,10 @@ import java.time.LocalDateTime;
  * Time: 14:59
  */
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Builder
-@ToString(exclude = {"product"})
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Media {
     @Id
@@ -29,6 +28,9 @@ public class Media {
 
     @Enumerated(EnumType.STRING)
     private MediaType mediaType;
+
+    @Enumerated(EnumType.STRING)
+    private MediaRelationType relationType;
 
     private String url;
 
@@ -40,5 +42,18 @@ public class Media {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @ToString.Exclude
     private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "rating_id")
+    @ToString.Exclude
+    private Rating rating;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private User user;
+
 }
+

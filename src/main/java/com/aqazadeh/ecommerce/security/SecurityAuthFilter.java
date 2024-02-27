@@ -2,12 +2,13 @@ package com.aqazadeh.ecommerce.security;
 
 import com.aqazadeh.ecommerce.exception.ApplicationException;
 import com.aqazadeh.ecommerce.exception.ExceptionType;
-import com.aqazadeh.ecommerce.repository.UserRepository;
 import com.aqazadeh.ecommerce.service.TokenService;
+import com.aqazadeh.ecommerce.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+
 /**
  * Author: Rovshan Aghayev
  * Version: v1.0
@@ -27,13 +29,12 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-
 public class SecurityAuthFilter extends OncePerRequestFilter {
+    private final UserService userService;
     private final TokenService tokenService;
-    private final UserRepository userRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
@@ -44,7 +45,7 @@ public class SecurityAuthFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = userRepository.findByUsername(username).orElseThrow(() -> new ApplicationException(ExceptionType.USER_NOT_FOUND));
+            UserDetails userDetails = userService.loadUserByUsername(username);
             if (!tokenService.validateToken(token, userDetails)) {
                 throw new ApplicationException(ExceptionType.TOKEN_EXPIRED);
             }

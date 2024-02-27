@@ -1,6 +1,6 @@
 package com.aqazadeh.ecommerce.dto.request;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Author: Rovshan Aghayev
@@ -10,10 +10,10 @@ import jakarta.validation.constraints.NotEmpty;
  */
 
 public record LoginRequest(
-        @NotEmpty
+        @NotBlank
         String username,
 
-        @NotEmpty
+        @NotBlank
         String password
 ) {
 }

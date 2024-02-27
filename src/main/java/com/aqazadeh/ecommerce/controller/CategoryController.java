@@ -1,9 +1,10 @@
 package com.aqazadeh.ecommerce.controller;
 
-import com.aqazadeh.ecommerce.dto.response.CategoryDto;
 import com.aqazadeh.ecommerce.dto.request.CreateCategoryRequest;
 import com.aqazadeh.ecommerce.dto.request.UpdateCategoryRequest;
+import com.aqazadeh.ecommerce.dto.response.CategoryDto;
 import com.aqazadeh.ecommerce.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +27,19 @@ public class CategoryController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> createCategory(@RequestBody CreateCategoryRequest request) {
+    public ResponseEntity<Void> createCategory(
+            @RequestBody @Valid CreateCategoryRequest request
+    ) {
         categoryService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateCategory(@PathVariable Long id, @RequestBody UpdateCategoryRequest request) {
+    public ResponseEntity<Void> updateCategory(
+            @PathVariable Long id,
+            @RequestBody UpdateCategoryRequest request
+    ) {
         categoryService.update(id, request);
         return ResponseEntity.noContent().build();
     }

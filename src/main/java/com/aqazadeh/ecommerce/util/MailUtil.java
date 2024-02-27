@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
  * Date: 21.02.2024
  * Time: 15:55
  */
+
 @Component
 @RequiredArgsConstructor
 public class MailUtil {
@@ -21,7 +22,7 @@ public class MailUtil {
         message.setFrom("noreply@aqazadeh.com");
         message.setTo(to);
         message.setSubject(subject);
-        message.setText("http://localhost:8080/api/v1/activate?token=" + text);
+        message.setText("http://localhost:8080/api/v1/auth/activate?token=" + text);
         emailSender.send(message);
     }
 }

@@ -10,7 +10,7 @@ import lombok.Getter;
  */
 @Getter
 public class ApplicationException extends RuntimeException {
-    private ExceptionType exceptionType;
+    private final ExceptionType exceptionType;
 
     public ApplicationException(ExceptionType exceptionType) {
         super(exceptionType.getInfo());

@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Author: Rovshan Aghayev
@@ -28,12 +26,12 @@ public class TokenServiceImpl implements TokenService {
 
 
     @Override
-    public String generateToken(String username, Integer expireMilli) {
+    public String generateToken(String username) {
 //        Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
                 .subject(username)
 //                .claims(claims)
-                .expiration(new Date(System.currentTimeMillis() + expireMilli * 1000))
+                .expiration(new Date(System.currentTimeMillis() + (7200 * 1000)))
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .signWith(getKey())
                 .compact();

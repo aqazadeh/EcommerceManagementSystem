@@ -14,35 +14,36 @@ import java.time.LocalDateTime;
  * Time: 17:47
  */
 @Entity
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = {"user", "variant", "product"})
 public class Cart {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Integer quantity;
-
-    @ManyToOne
-    @JoinColumn(name = "variant_id")
-    private ProductVariant variant;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "variant_id")
+    @ToString.Exclude
+    private ProductVariant variant;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    @ToString.Exclude
+    private Product product;
 }

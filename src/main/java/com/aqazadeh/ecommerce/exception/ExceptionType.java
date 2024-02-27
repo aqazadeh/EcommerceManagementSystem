@@ -31,7 +31,11 @@ public enum ExceptionType {
     STOCK_IS_ENDED("CAn not be found in stock", HttpStatus.NOT_FOUND),
     USER_NOT_ACTIVATED("User not activated", HttpStatus.FORBIDDEN),
     INVALID_ACTIVATION_TOKEN("Token expired or invalid", HttpStatus.BAD_REQUEST),
-    USER_IS_LOCKED("Account is locked", HttpStatus.FORBIDDEN);
+    USER_IS_LOCKED("Account is locked", HttpStatus.FORBIDDEN),
+    COMMENT_NOT_FOUND("Comment not found", HttpStatus.NOT_FOUND),
+    RATING_NOT_FOUND("Rating not found", HttpStatus.NOT_FOUND),
+    FAVORITE_NOT_FOUND("favorite not found", HttpStatus.NOT_FOUND),
+    INVALID_REFRESH_TOKEN("invalid refresh token", HttpStatus.BAD_REQUEST);
 
     private final String info;
     private final HttpStatus status;

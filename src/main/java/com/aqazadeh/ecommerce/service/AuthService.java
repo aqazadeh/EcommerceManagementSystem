@@ -1,9 +1,10 @@
 package com.aqazadeh.ecommerce.service;
 
-import com.aqazadeh.ecommerce.dto.request.ResetPasswordRequest;
-import com.aqazadeh.ecommerce.dto.response.AuthDto;
 import com.aqazadeh.ecommerce.dto.request.LoginRequest;
+import com.aqazadeh.ecommerce.dto.request.ResetPasswordRequest;
 import com.aqazadeh.ecommerce.dto.request.UserRegisterRequest;
+import com.aqazadeh.ecommerce.dto.response.AuthDto;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Author: Rovshan Aghayev
@@ -15,9 +16,9 @@ import com.aqazadeh.ecommerce.dto.request.UserRegisterRequest;
 public interface AuthService {
     void register(UserRegisterRequest request);
 
-    AuthDto login(LoginRequest request);
+    AuthDto login(LoginRequest request, HttpServletRequest servletRequest);
 
-    AuthDto refreshToken(String token);
+    AuthDto refreshToken(String token, HttpServletRequest request);
 
     void activate(String token);
 

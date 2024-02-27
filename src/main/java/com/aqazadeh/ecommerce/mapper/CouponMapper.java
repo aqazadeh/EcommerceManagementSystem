@@ -1,9 +1,9 @@
 package com.aqazadeh.ecommerce.mapper;
 
-import com.aqazadeh.ecommerce.dto.response.CouponDto;
-import com.aqazadeh.ecommerce.model.Coupon;
 import com.aqazadeh.ecommerce.dto.request.CreateCouponRequest;
 import com.aqazadeh.ecommerce.dto.request.UpdateCouponRequest;
+import com.aqazadeh.ecommerce.dto.response.CouponDto;
+import com.aqazadeh.ecommerce.model.Coupon;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -17,9 +17,9 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 
 public interface CouponMapper {
-    CouponDto toCouponDto(Coupon coupon);
+    CouponDto toDto(Coupon coupon);
 
-    Coupon toCoupon(CreateCouponRequest request);
+    Coupon toEntity(CreateCouponRequest request);
 
-    Coupon toCoupon(@MappingTarget Coupon coupon, UpdateCouponRequest request);
+    Coupon toEntity(@MappingTarget Coupon coupon, UpdateCouponRequest request);
 }

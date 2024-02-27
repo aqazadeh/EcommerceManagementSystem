@@ -1,9 +1,9 @@
 package com.aqazadeh.ecommerce.mapper;
 
-import com.aqazadeh.ecommerce.dto.response.DiscountDto;
-import com.aqazadeh.ecommerce.model.Discount;
 import com.aqazadeh.ecommerce.dto.request.CreateDiscountRequest;
 import com.aqazadeh.ecommerce.dto.request.UpdateDiscountRequest;
+import com.aqazadeh.ecommerce.dto.response.DiscountDto;
+import com.aqazadeh.ecommerce.model.Discount;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -16,9 +16,9 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
  */
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface DiscountMapper {
-    Discount toDiscount(CreateDiscountRequest request);
+    Discount toEntity(CreateDiscountRequest request);
 
-    Discount toDiscount(@MappingTarget Discount discount, UpdateDiscountRequest request);
+    Discount toEntity(@MappingTarget Discount discount, UpdateDiscountRequest request);
 
-    DiscountDto toDiscountDto(Discount discount);
+    DiscountDto toDto(Discount discount);
 }

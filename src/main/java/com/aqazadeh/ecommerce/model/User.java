@@ -8,7 +8,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Author: Rovshan Aghayev
@@ -18,12 +20,10 @@ import java.util.*;
  */
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
+@Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"addresses"})
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
     @Id
@@ -52,14 +52,25 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
     private List<UserAddress> addresses;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
     private List<Order> orders;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
     private List<Cart> cart;
+
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    private List<Favorite> favorites;
+
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    private List<Session> sessions;
 
 
     //Security
@@ -73,5 +84,5 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    private Set<Role> authorities = new HashSet<>(Set.of(Role.ADMIN));
+    private Set<Role> authorities = new HashSet<>(Set.of(Role.USER));
 }

@@ -13,13 +13,11 @@ import java.time.LocalDateTime;
  * Time: 18:31
  */
 @Entity
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = {"order"})
 public class PaymentDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,5 +30,7 @@ public class PaymentDetail {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @ToString.Exclude
     private Order order;
+
 }

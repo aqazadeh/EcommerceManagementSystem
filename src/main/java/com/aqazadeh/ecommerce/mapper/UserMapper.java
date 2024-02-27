@@ -1,13 +1,9 @@
 package com.aqazadeh.ecommerce.mapper;
 
-import com.aqazadeh.ecommerce.dto.response.UserAddressDto;
-import com.aqazadeh.ecommerce.dto.response.UserDto;
-import com.aqazadeh.ecommerce.model.User;
-import com.aqazadeh.ecommerce.model.UserAddress;
-import com.aqazadeh.ecommerce.dto.request.CreateUserAddressRequest;
-import com.aqazadeh.ecommerce.dto.request.UpdateUserAddressRequest;
 import com.aqazadeh.ecommerce.dto.request.UpdateUserRequest;
 import com.aqazadeh.ecommerce.dto.request.UserRegisterRequest;
+import com.aqazadeh.ecommerce.dto.response.UserDto;
+import com.aqazadeh.ecommerce.model.User;
 import org.mapstruct.*;
 
 /**
@@ -16,19 +12,21 @@ import org.mapstruct.*;
  * Date:2.02.2024
  * Time:15:01
  */
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(
+        componentModel = "spring",
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        uses = {
+                AddressMapper.class
+        }
+)
 public interface UserMapper {
 
-    UserAddress toAddress(CreateUserAddressRequest request);
-
-    UserAddress toAddress(@MappingTarget UserAddress address, UpdateUserAddressRequest request);
-    @Named("toAddressDto")
-    UserAddressDto toAddressDto(UserAddress address);
 
     @Mapping(source = "addresses", target = "addresses", qualifiedByName = "toAddressDto")
-    UserDto toUserDto(User user);
+    @Named("toUserDto")
+    UserDto toDto(User user);
 
-    User toUser(UserRegisterRequest request);
+    User toEntity(UserRegisterRequest request);
 
-    User toUser(@MappingTarget User user, UpdateUserRequest request);
+    User toEntity(@MappingTarget User user, UpdateUserRequest request);
 }

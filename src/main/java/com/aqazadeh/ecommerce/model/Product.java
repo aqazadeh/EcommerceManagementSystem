@@ -15,12 +15,10 @@ import java.util.List;
  * Time: 16:05
  */
 @Entity
-@Getter
-@Setter
+@Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"category", "variants", "discount", "user"})
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Product {
     @Id
@@ -28,6 +26,7 @@ public class Product {
     private Long id;
 
     private String name;
+
     private String slug;
     @Lob
     private String description;
@@ -40,18 +39,31 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @ToString.Exclude
     private Category category;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product")
+    @ToString.Exclude
     private List<ProductVariant> variants;
 
-    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "product")
+    @ToString.Exclude
     private Discount discount;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product")
+    @ToString.Exclude
     private List<Media> media;
+
+    @OneToMany(mappedBy = "product")
+    @ToString.Exclude
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "product")
+    @ToString.Exclude
+    private List<Rating> ratings;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private User user;
 }

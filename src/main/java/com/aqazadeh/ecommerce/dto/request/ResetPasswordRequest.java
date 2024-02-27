@@ -1,7 +1,8 @@
 package com.aqazadeh.ecommerce.dto.request;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 
 /**
  * Author: Rovshan Aghayev
@@ -11,8 +12,8 @@ import jakarta.validation.constraints.Size;
  */
 
 public record ResetPasswordRequest(
-        @NotEmpty String token,
-        @NotEmpty @Size(min = 8) String password,
-        @NotEmpty @Size(min = 8) String passwordConfirm
+        @NotBlank String token,
+        @NotBlank @Min(8) String password,
+        @NotEmpty @Min(8) String passwordConfirm
 ) {
 }

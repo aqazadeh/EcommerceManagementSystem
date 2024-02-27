@@ -1,13 +1,10 @@
 package com.aqazadeh.ecommerce.service;
 
-import com.aqazadeh.ecommerce.dto.response.UserAddressDto;
-import com.aqazadeh.ecommerce.dto.response.UserDto;
-import com.aqazadeh.ecommerce.model.User;
-import com.aqazadeh.ecommerce.model.UserAddress;
-import com.aqazadeh.ecommerce.dto.request.CreateUserAddressRequest;
-import com.aqazadeh.ecommerce.dto.request.UpdateUserAddressRequest;
 import com.aqazadeh.ecommerce.dto.request.UpdateUserPasswordRequest;
 import com.aqazadeh.ecommerce.dto.request.UpdateUserRequest;
+import com.aqazadeh.ecommerce.dto.response.SessionDto;
+import com.aqazadeh.ecommerce.dto.response.UserDto;
+import com.aqazadeh.ecommerce.model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -24,27 +21,16 @@ public interface UserService extends UserDetailsService {
 
     List<UserDto> getUsers(Integer page);
 
-    void updateUser(UpdateUserRequest request, Long userId);
+    void updateUser(User user, UpdateUserRequest request);
 
-    void updateUserPassword(Long userId, UpdateUserPasswordRequest request);
+    void updateUserPassword(User user, UpdateUserPasswordRequest request);
 
-    void deleteUser(Long id);
-
-    UserAddressDto getUserAddress(Long userId, Long addressId);
-
-    List<UserAddressDto> getUserAllAddresses(Long userId);
-
-    void createUserAddress(Long userId, CreateUserAddressRequest request);
-
-    void updateUserAddress(Long userId, Long addressId, UpdateUserAddressRequest request);
-
-    void deleteUserAddress(Long userId, Long addressId);
+    void deleteUser(User user);
 
     User findUserById(Long id);
 
-    void updateUser(User user);
-
-    UserAddress findAddressById(Long addressId);
 
     User findByConfirmationToken(String token);
+
+    List<SessionDto> getSessions(User user);
 }

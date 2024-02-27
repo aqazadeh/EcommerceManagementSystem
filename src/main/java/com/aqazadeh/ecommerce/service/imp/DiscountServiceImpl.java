@@ -1,10 +1,10 @@
 package com.aqazadeh.ecommerce.service.imp;
 
+import com.aqazadeh.ecommerce.dto.request.CreateDiscountRequest;
+import com.aqazadeh.ecommerce.dto.request.UpdateDiscountRequest;
 import com.aqazadeh.ecommerce.mapper.DiscountMapper;
 import com.aqazadeh.ecommerce.model.Discount;
 import com.aqazadeh.ecommerce.repository.DiscountRepository;
-import com.aqazadeh.ecommerce.dto.request.CreateDiscountRequest;
-import com.aqazadeh.ecommerce.dto.request.UpdateDiscountRequest;
 import com.aqazadeh.ecommerce.service.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,30 +18,30 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class DiscountServiceImpl implements DiscountService {
-    private final DiscountRepository discountRepository;
+    private final DiscountRepository repository;
     private final DiscountMapper discountMapper;
 
     @Override
     public Discount create(CreateDiscountRequest request) {
-        Discount discount = discountMapper.toDiscount(request);
-        return discountRepository.save(discount);
+        Discount discount = discountMapper.toEntity(request);
+        return repository.save(discount);
     }
 
     @Override
     public void update(Long id, UpdateDiscountRequest request) {
         Discount discount = findById(id);
-        Discount newDiscount = discountMapper.toDiscount(discount, request);
-        discountRepository.save(newDiscount);
+        Discount newDiscount = discountMapper.toEntity(discount, request);
+        repository.save(newDiscount);
     }
 
     @Override
     public void delete(Long id) {
         Discount discount = findById(id);
-        discountRepository.delete(discount);
+        repository.delete(discount);
     }
 
     @Override
     public Discount findById(Long id) {
-        return discountRepository.findById(id).orElseThrow();
+        return repository.findById(id).orElseThrow();
     }
 }

@@ -4,6 +4,8 @@ import com.aqazadeh.ecommerce.exception.ApplicationException;
 import com.aqazadeh.ecommerce.exception.ExceptionType;
 import com.aqazadeh.ecommerce.model.Media;
 import com.aqazadeh.ecommerce.model.Product;
+import com.aqazadeh.ecommerce.model.Rating;
+import com.aqazadeh.ecommerce.model.enums.MediaRelationType;
 import com.aqazadeh.ecommerce.model.enums.MediaType;
 import com.aqazadeh.ecommerce.repository.MediaRepository;
 import com.aqazadeh.ecommerce.service.MediaService;
@@ -43,6 +45,30 @@ public class MediaServiceImpl implements MediaService {
                     .mediaType(MediaType.IMAGE)
                     .url(publicId)
                     .product(product)
+                    .relationType(MediaRelationType.PRODUCT)
+                    .build();
+            Media saved = mediaRepository.save(media);
+            return saved;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Media upload(MultipartFile file, Rating rating) {
+        try {
+            HashMap<Object, Object> options = new HashMap<>();
+            options.put("folder", "products");
+            Map uploadedFile = cloudinary.uploader().upload(file.getBytes(), options);
+            String publicId = (String) uploadedFile.get("public_id");
+
+            Media media = Media.builder()
+                    .mediaType(MediaType.IMAGE)
+                    .url(publicId)
+                    .relationType(MediaRelationType.RATING)
+                    .rating(rating)
                     .build();
             Media saved = mediaRepository.save(media);
             return saved;

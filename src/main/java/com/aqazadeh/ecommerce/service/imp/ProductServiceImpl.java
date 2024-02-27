@@ -20,8 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MimeType;
-import org.springframework.util.MimeTypeUtils;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
@@ -38,18 +37,22 @@ import java.util.List;
 @Slf4j
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+
     private final ProductMapper productMapper;
+    private final DiscountMapper discountMapper;
+
     private final CategoryService categoryService;
     private final MediaService mediaService;
     private final DiscountService discountService;
+
     private final Slugify slugify;
     private final Cloudinary cloudinary;
-    private final DiscountMapper discountMapper;
 
     @Value("${pagination.limit}")
     private Integer pageLimit;
 
     @Override
+    @Transactional
     public void create(User user, MultipartFile[] media, CreateProductRequest request) {
 
         Category category = categoryService.findById(request.categoryId());
@@ -87,7 +90,6 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto getById(String id) {
         Long decodeId = slugify.decode(id);
         Product product = findById(decodeId);
-        product.getMedia().forEach(media -> media.setUrl(cloudinary.url().secure(true).generate(media.getUrl())));
         return productMapper.toDto(product);
     }
 
@@ -162,11 +164,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateDiscount(User user, Long productID, UpdateDiscountRequest request) {
+    public void updateDiscount(User user, Long productID, Long discountId, UpdateDiscountRequest request) {
         Product product = findSellerProductById(productID, user);
-        discountMapper.toDiscount(product.getDiscount(), request);
+        discountMapper.toEntity(product.getDiscount(), request);
         productRepository.save(product);
     }
+
 
     private Product findSellerProductById(Long id, User user) {
         Product product = findById(id);

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <include file="/db/migrations/2024/001-create-user-changelog.xml"/>
+    <include file="/db/migrations/2024/002-create-user-address-changelog.xml"/>
+    <include file="/db/migrations/2024/003-create-authorities-changelog.xml"/>
+    <include file="/db/migrations/2024/004-create-category-changelog.xml"/>
+    <include file="/db/migrations/2024/005-create-product-changelog.xml"/>
+    <include file="/db/migrations/2024/006-create-product-variant-changelog.xml"/>
+    <include file="/db/migrations/2024/007-create-coupon-changelog.xml"/>
+    <include file="/db/migrations/2024/008-create-rating-changelog.xml"/>
+    <include file="/db/migrations/2024/009-create-comment-changelog.xml"/>
+    <include file="/db/migrations/2024/010-create-cart-changelog.xml"/>
+    <include file="/db/migrations/2024/011-create-media-changelog.xml"/>
+    <include file="/db/migrations/2024/012-create-product-orders-changelog.xml"/>
+    <include file="/db/migrations/2024/013-create-order-item-changelog.xml"/>
+    <include file="/db/migrations/2024/014-create-payment-detail-changelog.xml"/>
+    <include file="/db/migrations/2024/015-create-favorite-changelog.xml"/>
+    <include file="/db/migrations/2024/016-create-discount-changelog.xml"/>
+    <include file="/db/migrations/2024/017-create-session-changelog.xml"/>
+</databaseChangeLog>

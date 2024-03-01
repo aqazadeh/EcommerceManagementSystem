@@ -21,7 +21,7 @@ import java.util.Date;
  */
 @Service
 public class TokenServiceImpl implements TokenService {
-    @Value("${Jwt.key}")
+    @Value("${jwt.key}")
     private String key;
 
 

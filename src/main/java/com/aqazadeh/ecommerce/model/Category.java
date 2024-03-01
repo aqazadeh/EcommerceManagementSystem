@@ -20,10 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Category extends BaseModel{
 
     @Column(unique = true)
     private String slug;
@@ -32,12 +29,6 @@ public class Category {
 
     @Lob
     private String about;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

@@ -19,10 +19,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Coupon {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Coupon extends BaseModel {
+
 
     @Enumerated(EnumType.STRING)
     private CouponType couponType;
@@ -40,9 +38,6 @@ public class Coupon {
     private String about;
 
     private LocalDateTime expiredTime;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

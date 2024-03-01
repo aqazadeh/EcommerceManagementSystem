@@ -15,11 +15,11 @@
             <column name="media_type" type="VARCHAR(255)"/>
             <column name="relation_type" type="VARCHAR(255)"/>
             <column name="url" type="VARCHAR(255)"/>
-            <column name="created_at" type="DATETIME"/>
-            <column name="updated_at" type="DATETIME"/>
             <column name="product_id" type="BIGINT"/>
             <column name="rating_id" type="BIGINT"/>
             <column name="user_id" type="BIGINT"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
         </createTable>
     </changeSet>
 

@@ -18,8 +18,6 @@
             <column name="last_name" type="VARCHAR(255)"/>
             <column name="phone" type="VARCHAR(255)"/>
             <column name="confirmation_token" type="VARCHAR(255)"/>
-            <column name="created_at" type="DATETIME"/>
-            <column name="update_at" type="DATETIME"/>
             <column name="account_non_expired" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
@@ -32,6 +30,8 @@
             <column name="credentials_non_expired" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
         </createTable>
     </changeSet>
     <changeSet id="addUniqueConstraint email on users" author="Rovshan Aghayev">

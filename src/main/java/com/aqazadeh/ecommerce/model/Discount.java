@@ -18,10 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Discount {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Discount extends BaseModel{
 
     private String name;
 
@@ -31,9 +28,6 @@ public class Discount {
     private Integer discountPercent;
 
     private LocalDateTime expiredTime;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
 
     @OneToOne
     @JoinColumn(name = "product_id")

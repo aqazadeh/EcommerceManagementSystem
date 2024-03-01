@@ -18,15 +18,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class OrderItems {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class OrderItems extends BaseModel {
 
     private Integer quantity;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

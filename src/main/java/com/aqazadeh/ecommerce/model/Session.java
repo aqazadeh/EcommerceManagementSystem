@@ -18,10 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Session {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Session extends BaseModel {
 
     private String accessToken;
 
@@ -31,8 +28,6 @@ public class Session {
 
     private String ip;
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

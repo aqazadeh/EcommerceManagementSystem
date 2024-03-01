@@ -14,9 +14,9 @@
             <column name="slug" type="VARCHAR(255)"/>
             <column name="name" type="VARCHAR(255)"/>
             <column name="about" type="oid"/>
+            <column name="category_id" type="BIGINT"/>
             <column name="created_at" type="DATETIME"/>
             <column name="updated_at" type="DATETIME"/>
-            <column name="category_id" type="BIGINT"/>
         </createTable>
     </changeSet>
 

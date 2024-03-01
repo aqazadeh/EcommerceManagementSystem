@@ -13,8 +13,9 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_payment_detail"/>
             </column>
             <column name="amount" type="DOUBLE"/>
-            <column name="created_at" type="DATETIME"/>
             <column name="order_id" type="BIGINT"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
         </createTable>
     </changeSet>
 

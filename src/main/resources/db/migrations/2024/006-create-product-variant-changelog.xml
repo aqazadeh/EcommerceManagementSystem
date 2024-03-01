@@ -14,9 +14,9 @@
             <column name="name" type="VARCHAR(255)"/>
             <column name="quantity" type="INT"/>
             <column name="price" type="DOUBLE"/>
+            <column name="product_id" type="BIGINT"/>
             <column name="created_at" type="DATETIME"/>
             <column name="updated_at" type="DATETIME"/>
-            <column name="product_id" type="BIGINT"/>
         </createTable>
     </changeSet>
 

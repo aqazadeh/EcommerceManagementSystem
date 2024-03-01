@@ -15,9 +15,9 @@
             <column name="city" type="VARCHAR(255)"/>
             <column name="postal_code" type="VARCHAR(255)"/>
             <column name="country" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT"/>
             <column name="created_at" type="DATETIME"/>
             <column name="updated_at" type="DATETIME"/>
-            <column name="user_id" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet id="addForeignKeyConstraint user_address on users" author="Rovshan Aghayev">

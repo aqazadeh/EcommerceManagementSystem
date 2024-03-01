@@ -18,15 +18,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class PaymentDetail {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class PaymentDetail extends BaseModel{
 
     private Double amount;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

@@ -25,10 +25,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseModel implements UserDetails {
 
     @Column(unique = true)
     private String username;
@@ -45,12 +42,6 @@ public class User implements UserDetails {
     private String phone;
 
     private String confirmationToken;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updateAt;
 
     @OneToMany(mappedBy = "user")
     @ToString.Exclude

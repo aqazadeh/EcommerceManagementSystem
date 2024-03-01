@@ -17,6 +17,7 @@
             <column name="variant_id" type="BIGINT"/>
             <column name="order_id" type="BIGINT"/>
             <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
         </createTable>
     </changeSet>
 

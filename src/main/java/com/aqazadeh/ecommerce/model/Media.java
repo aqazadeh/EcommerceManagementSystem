@@ -21,10 +21,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Media {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Media extends BaseModel {
 
     @Enumerated(EnumType.STRING)
     private MediaType mediaType;
@@ -33,12 +30,6 @@ public class Media {
     private MediaRelationType relationType;
 
     private String url;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
